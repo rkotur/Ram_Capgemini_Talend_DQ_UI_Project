@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<link href="/webjars/bootstrap/5.3.0/dist/css/bootstrap.css" rel="stylesheet"/>
+		<script type="text/javascript" src="/webjars/bootstrap/5.3.0/dist/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/webjars/jquery/3.7.0/dist/jquery.min.js"></script>
+		<title>Metadata</title>
+	</head>
+	<body>
+		<div align="center">
+    		<form action="#" th:object="${metadatamodel}" method="post" enctype="multipart/form-data" th:action="@{/metadatamodels/update/__${metadatamodel.Id}__}">
+    		<div class="project-list single">
+       		   <fieldset>
+                  <h3><u>Edit Metadata Information</u></h3>
+                   <table>
+
+                       <tr><td width="200" align="right">
+                   		<label for="name">Schema Name:</label></td >
+                       <td align="left" width="300">
+                       	<input type="text" th:field="*{dbschema}" autofocus="false"/>
+                    </td></tr>
+                       
+                    <tr><td width="200" align="right">
+                    <label for="name">Table Name:</label></td >
+                        <td align="left" width="300">
+                        	<input type="text" th:field="*{dbtable}" autofocus="false"/>
+                    </td ></tr>
+
+                       <tr><td width="200" align="right">
+                           <label for="name">Column Name:</label></td >
+                           <td align="left" width="300">
+                               <input type="text" th:field="*{dbcolumn}" autofocus="false"/>
+                           </td ></tr>
+
+                       <tr><td width="200" align="right">
+                           <label for="name">Check:</label></td >
+                           <td align="left" width="300">
+                               <input type="text" th:field="*{dbcheck}" autofocus="false"/>
+                           </td ></tr>
+
+
+
+                    <tr><td width="200" align="right">
+                    <label for="name">Updated By:</label></td >
+                        <td align="left" width="300">
+                        	<input type="text" th:field="*{updatedBy}" autofocus="false"/>
+                    </td ></tr>
+                       
+                    <tr><td width="200" align="right">
+                    <label for="name">Updated On:</label></td >
+                        <td align="left" width="300">
+                        	<input type="date" th:field="*{updatedOn}"  autofocus="false" />
+                    </td></tr><tr>
+                       
+
+                       
+                       
+                    	<td align="center" colspan="3">
+                    		<input class="btn btn-outline-dark" type="submit" Style="color:blue; text-decoration: underline"/>                    		
+
+                            <!--
+                            <input class="btn btn-outline-dark" type="reset"  Style="color:blue; text-decoration: underline"/>
+                            -->
+                            <input class="btn btn-primary dropdown-toggle" type="reset"   data-bs-toggle="dropdown" aria-expanded="false"/>
+
+
+                    		<button class="btn btn-outline-dark" type="button">
+                    			<a th:href="@{\metadatamodels\getAll}">Cancel</a>
+                    		</button>
+                       </td ></tr></table>
+                    </fieldset>
+                 </div>
+              </form>
+          </div>
+       </body>
+  </html>
