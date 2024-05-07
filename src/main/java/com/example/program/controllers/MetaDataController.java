@@ -2,6 +2,7 @@ package com.example.program.controllers;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import com.example.program.models.MetaDataModel;
 import com.example.program.Services.MetaDataService;
 
 import jakarta.servlet.http.HttpServletResponse;
-
+import com.example.program.repository.SchemaRepository;
 // DatabaseConnectionCheck
 
 
@@ -27,6 +28,12 @@ public class MetaDataController {
 
     @Autowired(required=true)
     private MetaDataService metadataService;
+    private final SchemaRepository schemaRepository;
+
+    public MetaDataController(SchemaRepository schemaRepository) {
+        this.schemaRepository = schemaRepository;
+    }
+
 
     @GetMapping("/getAll")
     public String getAll(Model model) {
@@ -39,6 +46,30 @@ public class MetaDataController {
     public String newMetaDataModel(Model model) {
         MetaDataModel metadatamodel = new MetaDataModel();
         model.addAttribute("metadatamodel", metadatamodel);
+
+        List<String> schemas = new ArrayList<String>();
+        schemas.add("option 1");
+        schemas.add("option 2");
+        schemas.add("option 3");
+        model.addAttribute("schemas", schemas);
+
+
+        //List<String> databaseNames = schemaRepository.findAllschema_name();
+        // Add the list to the model
+        // model.addAttribute("databaseNames", databaseNames);
+
+        List<String> schemaNames =  new ArrayList<>();
+        schemaRepository.getSchemas().forEach(e-> schemaNames.add(e.getName()));
+        model.addAttribute("schemaNames", schemaNames);
+
+        List<String> tableNames =  new ArrayList<>();
+        schemaRepository.getTables().forEach(e-> tableNames.add(e.getName()));
+        model.addAttribute("tableNames", tableNames);
+
+        List<String> columnsNames =  new ArrayList<>();
+        schemaRepository.getColumns().forEach(e-> columnsNames.add(e.getName()));
+        model.addAttribute("columnsNames", columnsNames);
+
         return "add-metadatamodel";
     }
 

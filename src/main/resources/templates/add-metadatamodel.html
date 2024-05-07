@@ -15,6 +15,42 @@
                    <h3><u>Enter New Meta Data Information</u></h3>
                    <table>
 
+                       <!--
+                       <tr><td width="200" align="right">
+                           <label for="dbschema1">Schema Name1:</label></td >
+                           <td align="left" width="300">
+                               <select class="form-control" id="dropDownList">
+                                   <option value="0">select schema</option>
+                                   <option th:each="schema : ${schemas}" th:value="${schema}" th:text="${schema}"></option>
+                               </select>
+                       </td></tr>
+                        -->
+
+                       <tr><td width="200" align="right">
+                           <label for="schemaNames">Select a Database:</label>
+                           <td align="left" width="300">
+                               <select id="dbschema" name="dbschema" th:field="*{dbschema}">
+                                   <option th:each="schema_name : ${schemaNames}" th:value="${schema_name}" th:text="${schema_name}"></option>
+                               </select>
+                           </td></tr>
+
+                       <tr><td width="200" align="right">
+                           <label for="tableNames">Select a Table:</label>
+                           <td align="left" width="300">
+                               <select id="dbtable" name="dbtable" th:field="*{dbtable}">
+                                   <option th:each="table_name : ${tableNames}" th:value="${table_name}" th:text="${table_name}"></option>
+                               </select>
+                           </td></tr>
+
+                       <tr><td width="200" align="right">
+                           <label for="columnsNames">Select a Column:</label>
+                           <td align="left" width="300">
+                               <select id="dbcolumn" name="dbcolumn" th:field="*{dbcolumn}" autofocus="false">
+                                   <option th:each="columns_Names : ${columnsNames}" th:value="${columns_Names}" th:text="${columns_Names}"></option>
+                               </select>
+                           </td></tr>
+
+                    <!--
                        <tr><td width="200" align="right">
                             <label for="dbschema">Schema Name:</label></td >
                            <td align="left" width="300">
@@ -31,6 +67,8 @@
                            <td align="left" width="300">
                                <input type="text" th:field="*{dbcolumn}" autofocus="false"/>
                        </td></tr>
+                    -->
+
 
                        <tr><td width="200" align="right">
                            <label for="dbcheck">Check:</label></td >

@@ -530,6 +530,7 @@
                          class="sign-in-form">
         -->
         <table>
+            <p class="text-danger" th:if="${param.loginError}" th:text="'Wrong Database connection..'"></p>
             <tbody>
             <tr>
               <td ><h3>Database :&emsp;</h3></td>
@@ -538,28 +539,29 @@
             <tr>
             <tr>
               <td ><h3>DB name :&emsp;</h3></td>
-              <td><input type="text" th:field="*{dbName}" placeholder="enter DB name" class="numeric-input"></td>
+              <td><input type="text" th:field="*{dbName}" value="mydb" placeholder="enter DB name" class="numeric-input"></td>
             </tr>
             <tr>
               <td><h3 for="port">Port :</h3></td>
-              <td><input type="text" th:field="*{port}" class="numeric-input" placeholder="Enter port number" required></td>
+              <td><input type="text" th:field="*{port}" value="3306" class="numeric-input" placeholder="Enter port number" required></td>
             </tr>
             <tr>
               <td><h3 for="hostname">Hostname : </h3></td>
-              <td><input type="text" th:field="*{hostname}" class="numeric-input" placeholder="Enter Host name" required></td>
+              <td><input type="text" th:field="*{hostname}"  value="localhost"  class="numeric-input" placeholder="Enter Host name" required></td>
             </tr>
             <tr>
               <td><h3 for="username">User :</h3></td>
-              <td><input type="text" th:field="*{username}" class="numeric-input" placeholder="Enter user name" required></td>
+              <td><input type="text" th:field="*{username}" value="ram" class="numeric-input" placeholder="Enter user name" required></td>
             </tr>
             <tr>
               <td><h3 for="password">Password :</h3></td>
-              <td><input type="password" th:field="*{password}" class="numeric-input" placeholder="Enter password" required></td>
+              <td><input type="password" th:field="*{password}" value="Mohan@123" class="numeric-input" placeholder="Enter password" required></td>
             </tr>
             </tbody>
             <div th:if="${error}">
               <p>[[${error}]]</p>
             </div>
+            <p>[[${error}]]</p>
           </table>
           <button type="submit"  class="btn solid">Submit</button>
         </form>

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -32,8 +34,14 @@ public class DBConnectionCheckController {
     //@GetMapping("/databaseSelection")
     @GetMapping("/")
     public ModelAndView databaseSelection() {
+
+
         ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
         modelAndView.addObject("connectionRequest", new DBConnectionRequest());
+
+
+
+
         return modelAndView;
     }
 
@@ -60,8 +68,8 @@ public class DBConnectionCheckController {
             } else {
                 System.out.println("It Fail to connected...");
                 model.addAttribute("error", "Connection Is Wrong, check the fields");
-                return new ModelAndView("DataBaseSelection");
-                //return new ModelAndView("/");
+                //return new ModelAndView("redirect:/databaseSelection");
+                return new ModelAndView("redirect:/databaseSelection?loginError=true");
             }
         } catch (Exception e) {
             System.out.println("It Error to connected...");
