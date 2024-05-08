@@ -5,6 +5,7 @@
 		<link href="/webjars/bootstrap/5.3.0/dist/css/bootstrap.css" rel="stylesheet"/>
 		<script type="text/javascript" src="/webjars/bootstrap/5.3.0/dist/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/webjars/jquery/3.7.0/dist/jquery.min.js"></script>
+        <script th:src="@{/js/Cascade_LOV_for_Schema_and_table.js}"></script>
 		<title>Meta Data</title>
 	</head>
 	<body>
@@ -25,6 +26,8 @@
                                </select>
                        </td></tr>
                         -->
+
+
 
                        <tr><td width="200" align="right">
                            <label for="schemaNames">Select a Database:</label>
@@ -50,7 +53,9 @@
                                </select>
                            </td></tr>
 
-                    <!--
+
+
+               <!--
                        <tr><td width="200" align="right">
                             <label for="dbschema">Schema Name:</label></td >
                            <td align="left" width="300">
@@ -67,7 +72,7 @@
                            <td align="left" width="300">
                                <input type="text" th:field="*{dbcolumn}" autofocus="false"/>
                        </td></tr>
-                    -->
+-->
 
 
                        <tr><td width="200" align="right">
@@ -79,7 +84,7 @@
                     <tr><td width="200" align="right">
                     <label for="name">Updated By:</label></td >
                         <td align="left" width="300">
-                        	<input type="text" th:field="*{updatedBy}" autofocus="false"/>
+                        	<input type="text" th:field="*{updatedBy}"  autofocus="false"/>
                     </td ></tr>
                     <tr><td width="200" align="right">
                     <label for="name">Updated On:</label></td >

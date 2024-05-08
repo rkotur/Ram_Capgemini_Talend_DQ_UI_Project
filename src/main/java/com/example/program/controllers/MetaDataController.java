@@ -5,14 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.program.models.MetaDataModel;
 import com.example.program.Services.MetaDataService;
@@ -63,15 +61,46 @@ public class MetaDataController {
         model.addAttribute("schemaNames", schemaNames);
 
         List<String> tableNames =  new ArrayList<>();
-        schemaRepository.getTables().forEach(e-> tableNames.add(e.getName()));
+        schemaRepository.getTables("spoton").forEach(e-> tableNames.add(e.getName()));
         model.addAttribute("tableNames", tableNames);
 
         List<String> columnsNames =  new ArrayList<>();
-        schemaRepository.getColumns().forEach(e-> columnsNames.add(e.getName()));
+        schemaRepository.getColumns("spoton","loading").forEach(e-> columnsNames.add(e.getName()));
         model.addAttribute("columnsNames", columnsNames);
 
         return "add-metadatamodel";
     }
+
+    @GetMapping("/getTables")
+    public @ResponseBody String getTablesFunc(@RequestParam String SchemaName)
+    {
+        String json = null;
+        List<String> tableNames =  new ArrayList<>();
+        schemaRepository.getTables(SchemaName).forEach(e-> tableNames.add(e.getName()));
+
+        try {
+            json = new ObjectMapper().writeValueAsString(tableNames);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    @GetMapping("/getColumns")
+    public @ResponseBody String getColumnsFunc(@RequestParam String SchemaName,@RequestParam String TableName)
+    {
+        String json = null;
+        List<String> ColumnNames =  new ArrayList<>();
+        schemaRepository.getColumns(SchemaName,TableName).forEach(e-> ColumnNames.add(e.getName()));
+
+        try {
+            json = new ObjectMapper().writeValueAsString(ColumnNames);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
 
     @GetMapping("/edit/{id}")
     public String editMetaDataModel(@PathVariable("id") int id, Model model, HttpServletResponse response)

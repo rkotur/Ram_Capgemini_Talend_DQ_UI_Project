@@ -37,14 +37,14 @@ public class DemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 
-		/*
-		System.out.println("-------- Schemas ------------------------------------------------------------");
-		schemaRepository.getSchemas().forEach(e->System.out.println(e.getName()));
-		System.out.println("---------- Tables ------------------------------------------------------------------------");
-		schemaRepository.getTables().forEach(e->System.out.println(e.getName()));
-		System.out.println("---------- Columns ------------------------------------------------------------------------");
-		schemaRepository.getColumns().forEach(e->System.out.println(e.getName()));
-		*/
+
+		//System.out.println("-------- Schemas ------------------------------------------------------------");
+		//schemaRepository.getSchemas().forEach(e->System.out.println(e.getName()));
+//		System.out.println("---------- Tables ------------------------------------------------------------------------");
+//		schemaRepository.getTables("spoton").forEach(e->System.out.println(e.getName()));
+//		System.out.println("---------- Columns ------------------------------------------------------------------------");
+//		schemaRepository.getColumns("spoton","loading").forEach(e->System.out.println(e.getName()));
+
 
 	}
 }
