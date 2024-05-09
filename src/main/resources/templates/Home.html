@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Customizing the blue color */
+        :root {
+            --primary-color: #007bff; /* blue */
+            --secondary-color: #6c757d; /* gray */
+        }
+
+        /* Adjustments for left-side menu */
+        #green {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            height: 100vh;
+        }
+
+        #green h4 {
+            margin-bottom: 20px;
+        }
+
+        #green .nav-link {
+            color: white;
+        }
+
+        #green .nav-link:hover {
+            color: white;
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#"><h3>Capgemini & QLik</h3></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+ 
+
+	<div class="container-fluid h-100">
+		<div class="row h-100">
+			<div class="col-2" id="green" > 
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="@{/databaseSelection}"> DB Login Check</a>
+
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Profile</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Custom</a>
+					</li>
+				</ul>
+			</div>
+			<!-- Content -->
+			<div class="col-10" align="center">
+				<h3>Welcome DQ User Interface</h3> 
+			</div>
+		</div>
+	</div>
+ 
+ 
+<!-- Bootstrap Bundle with Popper from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

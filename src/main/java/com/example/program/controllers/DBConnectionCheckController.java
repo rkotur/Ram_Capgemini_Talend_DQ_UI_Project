@@ -24,30 +24,30 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/Main")
 @Log4j2
 public class DBConnectionCheckController {
 
     @Autowired
     DBconnectionService dBconnectionService;
 
-    //@GetMapping("/databaseSelection")
-    @GetMapping("/")
-    public ModelAndView databaseSelection() {
 
-
-        ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
-        modelAndView.addObject("connectionRequest", new DBConnectionRequest());
-
-
-
-
-        return modelAndView;
+    @GetMapping("/Home")
+    public String databaseSelection() {
+        return "Home";
     }
 
 
-    @GetMapping("/databaseSelection")
+
+    @GetMapping("/databaseconnectioncheck")
     public ModelAndView databaseSelection1() {
+        ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
+        modelAndView.addObject("connectionRequest", new DBConnectionRequest());
+        return modelAndView;
+    }
+
+    @GetMapping("/databaseSelection")
+    public ModelAndView databaseSelection2() {
         ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
         modelAndView.addObject("connectionRequest", new DBConnectionRequest());
         return modelAndView;
