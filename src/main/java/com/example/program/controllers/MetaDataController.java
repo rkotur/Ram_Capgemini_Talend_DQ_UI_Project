@@ -40,7 +40,7 @@ public class MetaDataController {
 */
 
 
-    @GetMapping("/getAll")
+    @RequestMapping(value="/getAll", method = RequestMethod.POST)
     public String getAll(Model model) {
         List<MetaDataModel> stlist = metadataService.getAll();
         model.addAttribute("metadatamodels", stlist);

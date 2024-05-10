@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<div align="center">
-    		<form action="#" th:object="${metadatamodel}" method="post" th:action="@{saveNew}" enctype="multipart/form-data">
+    		<form action="#" th:object="${metadata/getAll}" method="post" th:action="@{saveNew}" enctype="multipart/form-data">
     		<div class="project-list single">
     		   <fieldset>
                    <h3><u>Enter New Meta Data Information</u></h3>
@@ -96,7 +96,7 @@
                     		<input class="btn btn-outline-dark" type="submit" Style="color:blue; text-decoration: underline"/>                    		
                     		<input class="btn btn-outline-dark" type="reset"  Style="color:blue; text-decoration: underline"/>
                     		<button class="btn btn-outline-dark" type="button">
-                    			<a th:href="@{\metadatamodels\getAll}">Cancel</a>
+                    			<a th:href="@{\metadata\getAll}">Cancel</a>
                     		</button>
                        </td ></tr></table>            
                  </fieldset>

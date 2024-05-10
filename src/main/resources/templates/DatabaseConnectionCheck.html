@@ -539,8 +539,9 @@
         <form action="#"
               th:action="@{/metadata/getAll}"
               class="sign-in-form"
-              th:method="get"
-              th:object="${connectionRequest}">
+              method="post"
+              th:object="${connectionRequest}"
+              enctype="multipart/form-data">
 
         <table>
             <p class="text-danger" th:if="${param.loginError}" th:text="'Wrong Database connection..'"></p>
