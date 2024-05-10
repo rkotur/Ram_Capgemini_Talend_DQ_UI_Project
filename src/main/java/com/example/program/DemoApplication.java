@@ -46,5 +46,6 @@ public class DemoApplication {
 //		schemaRepository.getColumns("spoton","loading").forEach(e->System.out.println(e.getName()));
 
 
+
 	}
 }

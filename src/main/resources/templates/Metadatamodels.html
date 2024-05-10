@@ -23,7 +23,7 @@
 		<td>Table Name</td>
 		<td>Column Name</td>
 		<td>Check</td>
-		<td></td>
+		<!-- <td></td> -->
 		<td>Remove</td>
 	</tr>
 	</thead>
@@ -35,11 +35,12 @@
 			<td th:text="${metadatamodel.dbtable}"></td>
 			<td th:text="${metadatamodel.dbcolumn}"></td>
 			<td th:text="${metadatamodel.dbcheck}"></td>
-
+<!--
 			<td> <button class="btn btn-outline-dark" type="button">
 				<a th:href="@{edit/__${metadatamodel.Id}__}">Edit</a>
 			</button>
 			</td>
+-->
 			<td>
 				<button class="btn btn-outline-dark" type="submit" Style="color:blue;text-decoration:underline">
 					Delete

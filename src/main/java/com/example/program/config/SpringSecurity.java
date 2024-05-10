@@ -34,18 +34,18 @@ public class SpringSecurity {
                                 .requestMatchers("/index").permitAll() // Permit Main Page
                                 .requestMatchers("/login").permitAll() // Permit Main Page
                                 .requestMatchers("/webjars/**").permitAll() // Permit all CSS
+                                .requestMatchers("/js/**").permitAll() // Ram this is Javascript call security file for cascate list values
+                                .requestMatchers("/Main/**").authenticated()
                                 .requestMatchers("/Main/metadatamodels/**").authenticated() // Dont Permit without login
                                 .requestMatchers("/metadata/**").authenticated()
-                                .requestMatchers("/Main/**").authenticated()
-                                .requestMatchers("/Main/getAll").authenticated()
                                 .requestMatchers("/users").hasRole("ADMIN")
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                //.defaultSuccessUrl("/users")
-                                // Ram its working - After loing its redirecting this page.
-                                .defaultSuccessUrl("/Main/Home", true)
+                                //.defaultSuccessUrl("/Main/navigation", true)
+                                // databaseSelection
+                                .defaultSuccessUrl("/Main/databaseSelection", true)
                                 .permitAll()
                 ).logout(
                         logout -> logout
