@@ -40,11 +40,14 @@ public class MetaDataController {
 */
 
 
-    @RequestMapping(value="/getAll", method = RequestMethod.POST)
+    //@RequestMapping(value="/getAll", method = RequestMethod.POST)
+    @GetMapping("/getAll")
     public String getAll(Model model) {
         List<MetaDataModel> stlist = metadataService.getAll();
         model.addAttribute("metadatamodels", stlist);
         //return "metadatamodels";
+        //return "Metadatamodels";
+        //metadata/getAll
         return "Metadatamodels";
     }
 
@@ -55,11 +58,10 @@ public class MetaDataController {
         MetaDataModel metadatamodel = new MetaDataModel();
         model.addAttribute("metadatamodel", metadatamodel);
 
-        List<String> schemas = new ArrayList<String>();
-        schemas.add("option 1");
-        schemas.add("option 2");
-        schemas.add("option 3");
-        model.addAttribute("schemas", schemas);
+
+
+
+
 
 
         //List<String> databaseNames = schemaRepository.findAllschema_name();
@@ -77,6 +79,25 @@ public class MetaDataController {
         List<String> columnsNames =  new ArrayList<>();
         schemaRepository.getColumns("spoton","loading").forEach(e-> columnsNames.add(e.getName()));
         model.addAttribute("columnsNames", columnsNames);
+
+
+        List<String> checkvalues = new ArrayList<>();
+
+        checkvalues.add("Null_Count");
+        checkvalues.add("Blank_Count");
+        checkvalues.add("Distinct_Count");
+        checkvalues.add("Start_Lower_Case");
+        checkvalues.add("Start_Upper_Case");
+        checkvalues.add("Alpha_Numeric_Chk");
+        checkvalues.add("Only_Numeric_Chk");
+        checkvalues.add("Email_Pattern_Chk");
+        checkvalues.add("Special_Char_Chk");
+        checkvalues.add("Min_value");
+        checkvalues.add("Max_value");
+        checkvalues.add("Avg");
+
+        checkvalues.add("0");
+        model.addAttribute("checkvalues", checkvalues);
 
         return "add-metadatamodel";
     }
@@ -132,7 +153,10 @@ public class MetaDataController {
             @ModelAttribute(value="metadatamodel") MetaDataModel metadatamodel) throws IOException {
 
         metadataService.insert(metadatamodel);
-        return "redirect:/metadatamodels/getAll";
+        //return "redirect:/metadatamodels/getAll";
+        //return "redirect:/Main/databaseSelection";
+        //metadata/getAll
+        return "redirect:/metadata/getAll";
     }
 
     @PostMapping("/update/{id}")

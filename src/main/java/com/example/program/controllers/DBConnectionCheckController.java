@@ -46,36 +46,44 @@ public class DBConnectionCheckController {
     }
 
     @GetMapping("/databaseconnectioncheck")
-    public ModelAndView databaseSelection1() {
-        ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
+    public ModelAndView databaseconnectioncheck1() {
+        //ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
+        ModelAndView modelAndView = new ModelAndView("test_connection");
         modelAndView.addObject("connectionRequest", new DBConnectionRequest());
         return modelAndView;
     }
 
     @GetMapping("/databaseSelection")
-    public ModelAndView databaseSelection2() {
+    public ModelAndView databaseSelection_fun() {
         ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
         modelAndView.addObject("connectionRequest", new DBConnectionRequest());
         return modelAndView;
     }
 
+    @GetMapping("/navigation")
+    public ModelAndView navigation() {
+        ModelAndView modelAndView = new ModelAndView("Navigation_ProfilingCustom");
+        modelAndView.addObject("connectionRequest", new DBConnectionRequest());
 
-    @PostMapping("/test-connection")
+        return modelAndView;
+    }
+
+
+    @PostMapping("/test_connection")
     public ModelAndView testConnection(@ModelAttribute DBConnectionRequest connectionRequest,
                                        Model model) {
-
 
         try {
             boolean isConnected = dBconnectionService.testConnection(connectionRequest);
             if (isConnected) {
                 System.out.println("It connected...");
                 //return new ModelAndView("redirect:/profiling");
-                return new ModelAndView("redirect:/metadatamodels/getAll");
+                return new ModelAndView("redirect:/metadata/getAll");
             } else {
                 System.out.println("It Fail to connected...");
                 model.addAttribute("error", "Connection Is Wrong, check the fields");
                 //return new ModelAndView("redirect:/databaseSelection");
-                return new ModelAndView("redirect:/databaseSelection?loginError=true");
+                return new ModelAndView("redirect:/Main/databaseSelection?loginError=true");
             }
         } catch (Exception e) {
             System.out.println("It Error to connected...");
