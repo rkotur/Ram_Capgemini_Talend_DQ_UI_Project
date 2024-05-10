@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,7 +64,7 @@
 			<div class="col-2" id="green" > 
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item">
-						<a class="nav-link" href="@{/databaseSelection}"> DB Login Check</a>
+						<a class="nav-link" th:href="@{databaseSelection}"> DB Login Check</a>
 
 					</li>
 					<li class="nav-item">

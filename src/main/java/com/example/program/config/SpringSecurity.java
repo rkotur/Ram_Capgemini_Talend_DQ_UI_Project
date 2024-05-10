@@ -34,8 +34,10 @@ public class SpringSecurity {
                                 .requestMatchers("/index").permitAll() // Permit Main Page
                                 .requestMatchers("/login").permitAll() // Permit Main Page
                                 .requestMatchers("/webjars/**").permitAll() // Permit all CSS
-                                .requestMatchers("/metadatamodels/**").authenticated() // Dont Permit without login
+                                .requestMatchers("/Main/metadatamodels/**").authenticated() // Dont Permit without login
+                                .requestMatchers("/metadata/**").authenticated()
                                 .requestMatchers("/Main/**").authenticated()
+                                .requestMatchers("/Main/getAll").authenticated()
                                 .requestMatchers("/users").hasRole("ADMIN")
                 ).formLogin(
                         form -> form

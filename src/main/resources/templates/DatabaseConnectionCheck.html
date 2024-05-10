@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -522,13 +524,24 @@
   <div class="forms-container">
     <div class="signin-signupsec1">
 
-      <form action="#" th:action="@{/test-connection}" th:object="${connectionRequest}" method="post" class="sign-in-form">
-
-        <!-- <form action="#" th:action="@{/metadatamodels/getAll}"
-                         th:object="${connectionRequest}"
-                         method="post"
-                         class="sign-in-form">
+    <!--
+      <form  th:action="@{/metadata/test}" th:object="${connectionRequest}" method="post" class="sign-in-form">
+    -->
+        <!--
+            <form  th:action="@{/metadata/getAll}" th:object="${connectionRequest}" method="post" class="sign-in-form">
         -->
+              <!--
+               <form action="#" th:action="@{/metadatamodels/getAll}"
+                               th:object="${connectionRequest}"
+                               method="post"
+                               class="sign-in-form">
+                -->
+        <form action="#"
+              th:action="@{/metadata/getAll}"
+              class="sign-in-form"
+              th:method="get"
+              th:object="${connectionRequest}">
+
         <table>
             <p class="text-danger" th:if="${param.loginError}" th:text="'Wrong Database connection..'"></p>
             <tbody>
@@ -561,10 +574,37 @@
             <div th:if="${error}">
               <p>[[${error}]]</p>
             </div>
-            <p>[[${error}]]</p>
           </table>
-          <button type="submit"  class="btn solid">Submit</button>
+
+            <!--
+            <button th:if="${not error}" class="btn btn-outline-dark">
+            <a th:href="@{/metadatamodels/getAll}">Go to List</a>
+            </button>
+            -->
+
+            <!--
+            <a th:if="${not error}" th:href="@{/metadatamodels/getAll}">Go to List</a>
+            -->
+            <button type="submit"  class="btn solid" value="Submit" > Submit </button>
         </form>
+
+
+
+
+
+<!--
+        <button th:if="${not error}" class="btn btn-outline-dark" type="button">
+            <a th:href="@{\metadatamodels\getAll}">Go to List</a>
+        </button>
+-->
+
+
+        <!-- Conditionally render the button if there is no error -->
+<!--   <button th:if="${not error}" class="btn btn-outline-dark" type="button">
+            <a th:href="@{\metadatamodels\getAll}">Go to List</a>
+        </button>
+        -->
+
       </div>
     </div>
   </div>

@@ -6,13 +6,13 @@ package com.example.program.controllers;
 
 import com.example.program.Services.*;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.program.models.MetaDataModel;
+import com.example.program.Services.MetaDataService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,13 +31,21 @@ public class DBConnectionCheckController {
     @Autowired
     DBconnectionService dBconnectionService;
 
+    @Autowired(required=true)
+    private MetaDataService metadataService;
 
     @GetMapping("/Home")
     public String databaseSelection() {
         return "Home";
     }
 
-
+    @GetMapping("/getAll")
+    public String getAll(Model model) {
+        List<MetaDataModel> stlist = metadataService.getAll();
+        model.addAttribute("metadatamodels", stlist);
+        //return "metadatamodels";
+        return "Metadatamodels";
+    }
 
     @GetMapping("/databaseconnectioncheck")
     public ModelAndView databaseSelection1() {

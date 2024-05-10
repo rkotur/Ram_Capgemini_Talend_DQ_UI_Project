@@ -21,7 +21,7 @@ import com.example.program.repository.SchemaRepository;
 
 
 @Controller
-@RequestMapping("/metadatamodels")
+@RequestMapping("/metadata")
 public class MetaDataController {
 
     @Autowired(required=true)
@@ -32,13 +32,23 @@ public class MetaDataController {
         this.schemaRepository = schemaRepository;
     }
 
+/*
+    @GetMapping("/test")
+    public String getAll() {
+        return "Metadatamodels";
+    }
+*/
+
 
     @GetMapping("/getAll")
     public String getAll(Model model) {
         List<MetaDataModel> stlist = metadataService.getAll();
         model.addAttribute("metadatamodels", stlist);
-        return "metadatamodels";
+        //return "metadatamodels";
+        return "Metadatamodels";
     }
+
+
 
     @GetMapping("/addNew")
     public String newMetaDataModel(Model model) {
