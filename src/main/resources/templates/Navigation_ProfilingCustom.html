@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="/webjars/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-  <script src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/webjars/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-  <style>
+    <style>
   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
 
   * {
@@ -519,96 +518,30 @@
   }
   </style>
 </head>
+
 <body>
 <div class="container">
-  <div class="forms-container">
-    <div class="signin-signupsec1">
+    <div class="forms-container">
+        <div class="signin-signupsec2">
+            <!-- <form action="" class="sign-in-form"> -->
+                <!--
+                <button class="btn solid"><a href="Profiling_Schema.html">profiling</a></button>
+                -->
+                <button class="btn solid"><a th:href="@{/metadata/getAll}">profiling</a></button>
+                <br>
+                <button class="btn solid"><a href="custom_schema.html">custom</a></button>
 
-    <!--
-      <form  th:action="@{/metadata/test}" th:object="${connectionRequest}" method="post" class="sign-in-form">
-    -->
-        <!--
-            <form  th:action="@{/metadata/getAll}" th:object="${connectionRequest}" method="post" class="sign-in-form">
-        -->
-<!--
-        <form action="#"
-              th:action="@{/metadata/getAll}"
-              class="sign-in-form"
-              method="post"
-              th:object="${connectionRequest}"
-              enctype="multipart/form-data">
--->
-            <form action="#"
-                  th:action="@{/Main/test_connection}"\
-                  class="sign-in-form"
-                  method="post"
-                  th:object="${connectionRequest}"
-                  enctype="multipart/form-data">
-        <table>
-            <p cssErrorClass="form-field-error" style="color: red" th:if="${param.loginError}" th:text="'Error - Wrong Database connection..'"></p>
-            <tbody>
-            <tr>
-              <td ><h3>Database :&emsp;</h3></td>
-              <td><input type="text" placeholder="enter Database name" value="MySQL" class="numeric-input" readonly></td>
-            </tr>
-            <tr>
-            <tr>
-              <td ><h3>DB name :&emsp;</h3></td>
-              <td><input type="text" th:field="*{dbName}" value="mydb" placeholder="enter DB name" class="numeric-input"></td>
-            </tr>
-            <tr>
-              <td><h3 for="port">Port :</h3></td>
-              <td><input type="text" th:field="*{port}" value="3306" class="numeric-input" placeholder="Enter port number" required></td>
-            </tr>
-            <tr>
-              <td><h3 for="hostname">Hostname : </h3></td>
-              <td><input type="text" th:field="*{hostname}"  value="localhost"  class="numeric-input" placeholder="Enter Host name" required></td>
-            </tr>
-            <tr>
-              <td><h3 for="username">User :</h3></td>
-              <td><input type="text" th:field="*{username}" value="ram" class="numeric-input" placeholder="Enter user name" required></td>
-            </tr>
-            <tr>
-              <td><h3 for="password">Password :</h3></td>
-              <td><input type="password" th:field="*{password}" value="Mohan@123" class="numeric-input" placeholder="Enter password" required></td>
-            </tr>
-            </tbody>
-          </table>
-
-            <!--
-            <button th:if="${not error}" class="btn btn-outline-dark">
-            <a th:href="@{/metadatamodels/getAll}">Go to List</a>
-            </button>
-            -->
-
-            <!--
-            <a th:if="${not error}" th:href="@{/metadatamodels/getAll}">Go to List</a>
-            -->
-            <button type="submit"  class="btn solid" value="Submit" > Submit </button>
-        </form>
-
-
-
-
-
-<!--
-        <button th:if="${not error}" class="btn btn-outline-dark" type="button">
-            <a th:href="@{\metadatamodels\getAll}">Go to List</a>
-        </button>
--->
-
-
-        <!-- Conditionally render the button if there is no error -->
-<!--   <button th:if="${not error}" class="btn btn-outline-dark" type="button">
-            <a th:href="@{\metadatamodels\getAll}">Go to List</a>
-        </button>
-        -->
-
-      </div>
+           <!-- </form> -->
+        </div>
     </div>
-  </div>
+    <div class="panels-container">
 
-
-  <script src="app.js"></script>
-  </body>
-  </html>
+        <div class="panel left-panel">
+            <div class="content">
+            </div>
+            <img src="./img/log.svg" class="image" alt="">
+        </div>
+    </div>
+</div>
+</body>
+</html>

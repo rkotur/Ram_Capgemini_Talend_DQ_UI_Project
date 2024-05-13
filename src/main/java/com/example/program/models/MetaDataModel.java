@@ -1,8 +1,11 @@
 package com.example.program.models;
 
 import java.util.Date;
+
+import org.hibernate.annotations.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 @Entity
 public class MetaDataModel {
@@ -12,7 +15,7 @@ public class MetaDataModel {
     private String dbschema;
     private String dbtable;
     private String dbcolumn;
-    private int dbcheck;
+    private String dbcheck;
 
     public Integer getId() {
         return Id;
@@ -46,11 +49,11 @@ public class MetaDataModel {
         this.dbcolumn = dbcolumn;
     }
 
-    public int getDbcheck() {
+    public String getDbcheck() {
         return dbcheck;
     }
 
-    public void setDbcheck(int dbcheck) {
+    public void setDbcheck(String dbcheck) {
         this.dbcheck = dbcheck;
     }
 
@@ -80,7 +83,7 @@ public class MetaDataModel {
     }
 
     public MetaDataModel(Integer id, String dbschema, String dbtable,
-                         String dbcolumn,int dbcheck,
+                         String dbcolumn,String dbcheck,
                          String updatedBy,
                          Date updatedOn) {
         super();
