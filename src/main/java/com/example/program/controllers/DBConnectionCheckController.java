@@ -6,62 +6,84 @@ package com.example.program.controllers;
 
 import com.example.program.Services.*;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.program.models.MetaDataModel;
+import com.example.program.Services.MetaDataService;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping(value="/Main", method=RequestMethod.POST)
 @Log4j2
 public class DBConnectionCheckController {
 
     @Autowired
     DBconnectionService dBconnectionService;
 
-    //@GetMapping("/databaseSelection")
-    @GetMapping("/")
-    public ModelAndView databaseSelection() {
-        ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
+    @Autowired(required=true)
+    private MetaDataService metadataService;
+
+    @GetMapping("/Home")
+    public String databaseSelection() {
+        return "Home";
+    }
+
+    @GetMapping("/getAll")
+    public String getAll(Model model) {
+        List<MetaDataModel> stlist = metadataService.getAll();
+        model.addAttribute("metadatamodels", stlist);
+        //return "metadatamodels";
+        System.out.println("Hi Ram is call ing GetALL");
+        return "redirect:/Metadatamodels";
+    }
+
+    @GetMapping("/databaseconnectioncheck")
+    public ModelAndView databaseconnectioncheck1() {
+        //ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
+        ModelAndView modelAndView = new ModelAndView("test_connection");
         modelAndView.addObject("connectionRequest", new DBConnectionRequest());
         return modelAndView;
     }
-
 
     @GetMapping("/databaseSelection")
-    public ModelAndView databaseSelection1() {
+    public ModelAndView databaseSelection_fun() {
         ModelAndView modelAndView = new ModelAndView("DatabaseConnectionCheck");
         modelAndView.addObject("connectionRequest", new DBConnectionRequest());
         return modelAndView;
     }
 
+    @GetMapping("/navigation")
+    public ModelAndView navigation() {
+        ModelAndView modelAndView = new ModelAndView("Navigation_ProfilingCustom");
+        modelAndView.addObject("connectionRequest", new DBConnectionRequest());
 
-    @PostMapping("/test-connection")
+        return modelAndView;
+    }
+
+
+    @PostMapping("/test_connection")
     public ModelAndView testConnection(@ModelAttribute DBConnectionRequest connectionRequest,
                                        Model model) {
-
 
         try {
             boolean isConnected = dBconnectionService.testConnection(connectionRequest);
             if (isConnected) {
                 System.out.println("It connected...");
-                //return new ModelAndView("redirect:/profiling");
-                return new ModelAndView("redirect:/metadatamodels/getAll");
+                //return new ModelAndView("redirect:/metadata/getAll");
+                return new ModelAndView("redirect:/Main/navigation");
             } else {
                 System.out.println("It Fail to connected...");
                 model.addAttribute("error", "Connection Is Wrong, check the fields");
-                return new ModelAndView("DataBaseSelection");
-                //return new ModelAndView("/");
+                //return new ModelAndView("redirect:/databaseSelection");
+                return new ModelAndView("redirect:/Main/databaseSelection?loginError=true");
             }
         } catch (Exception e) {
             System.out.println("It Error to connected...");
