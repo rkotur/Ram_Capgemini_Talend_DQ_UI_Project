@@ -22,19 +22,20 @@ public class DBconnectionService {
 
     public boolean testConnection(DBConnectionRequest connectionRequest) {
 
-        /*
+
         String url =
                 "jdbc:postgresql://" +
                         connectionRequest.getHostname() + ":" +
                         connectionRequest.getPort() + "/" + connectionRequest.getDbName();
 
-        */
+
+        /*
         String url =
                 "jdbc:mysql://" +
                         connectionRequest.getHostname() + ":" +
                         connectionRequest.getPort() + "/" +
                         connectionRequest.getDbName();
-
+        */
         System.out.println("Ram..... URL:.."+url);
 
         return dbConnectionUrl.equals(url)
