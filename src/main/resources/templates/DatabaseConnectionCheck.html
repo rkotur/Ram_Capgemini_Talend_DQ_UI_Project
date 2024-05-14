@@ -549,16 +549,16 @@
             <tbody>
             <tr>
               <td ><h3>Database :&emsp;</h3></td>
-              <td><input type="text" placeholder="enter Database name" value="MySQL" class="numeric-input" readonly></td>
+              <td><input type="text" placeholder="enter Database name" value="postgres" class="numeric-input" ></td>
             </tr>
             <tr>
             <tr>
               <td ><h3>DB name :&emsp;</h3></td>
-              <td><input type="text" th:field="*{dbName}" value="mydb" placeholder="enter DB name" class="numeric-input"></td>
+              <td><input type="text" th:field="*{dbName}" value="postgres" placeholder="enter DB name" class="numeric-input"></td>
             </tr>
             <tr>
               <td><h3 for="port">Port :</h3></td>
-              <td><input type="text" th:field="*{port}" value="3306" class="numeric-input" placeholder="Enter port number" required></td>
+              <td><input type="text" th:field="*{port}" value="5432" class="numeric-input" placeholder="Enter port number" required></td>
             </tr>
             <tr>
               <td><h3 for="hostname">Hostname : </h3></td>
