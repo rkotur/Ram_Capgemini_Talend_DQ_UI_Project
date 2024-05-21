@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+
+        /* Customizing the blue color */
+        :root {
+            --primary-color: #007bff; /* blue */
+            --secondary-color: #0076CE; /* gray */
+        }
+
+        /* Adjustments for left-side menu */
+        #green {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            height: 100vh;
+        }
+
+        #green h4 {
+            margin-bottom: 20px;
+        }
+
+        #green .nav-link {
+            color: white;
+        }
+
+        #green .nav-link:hover {
+            color: white;
+            background-color: var(--secondary-color);
+        }

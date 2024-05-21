@@ -1,13 +1,14 @@
 package com.example.program.models;
 
 import java.util.Date;
-
-import org.hibernate.annotations.Table;
+import jakarta.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.Entity;
-import jakarta.persistence.*;
+
+import static freemarker.template.utility.StringUtil.replace;
 
 @Entity
+@Table(name="DQ_Table_Metadata")
 public class MetaDataModel {
 
     @jakarta.persistence.Id
@@ -100,7 +101,7 @@ public class MetaDataModel {
     public String toString() {
         return "MetaDataModel [Id=" + Id + ", dbschema=" + dbschema + ", dbtable=" + dbtable + ", "
                 + ", dbcolumn=" + dbcolumn + ", "
-                + ", dbcheck=" + dbcheck + ", "
+                + ", dbcheck=" + dbcheck+ ", "
                 + "updatedBy=" + updatedBy + ", updatedOn=" + updatedOn + "]";
     }
 

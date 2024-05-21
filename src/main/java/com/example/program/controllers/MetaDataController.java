@@ -43,8 +43,44 @@ public class MetaDataController {
     //@RequestMapping(value="/getAll", method = RequestMethod.POST)
     @GetMapping("/getAll")
     public String getAll(Model model) {
+
+        MetaDataModel metadatamodel = new MetaDataModel();
+        model.addAttribute("metadatamodel", metadatamodel);
+//-----------------------------------------------------------------------
+        List<String> schemaNames =  new ArrayList<>();
+        schemaRepository.getSchemas().forEach(e-> schemaNames.add(e.getName()));
+        model.addAttribute("schemaNames", schemaNames);
+
+        List<String> tableNames =  new ArrayList<>();
+        schemaRepository.getTables("spoton").forEach(e-> tableNames.add(e.getName()));
+        model.addAttribute("tableNames", tableNames);
+
+        List<String> columnsNames =  new ArrayList<>();
+        schemaRepository.getColumns("spoton","loading").forEach(e-> columnsNames.add(e.getName()));
+        model.addAttribute("columnsNames", columnsNames);
+
+
+        List<String> checkvalues = new ArrayList<>();
+
+        checkvalues.add("Null_Count");
+        checkvalues.add("Blank_Count");
+        checkvalues.add("Distinct_Count");
+        checkvalues.add("Start_Lower_Case");
+        checkvalues.add("Start_Upper_Case");
+        checkvalues.add("Alpha_Numeric_Chk");
+        checkvalues.add("Only_Numeric_Chk");
+        checkvalues.add("Email_Pattern_Chk");
+        checkvalues.add("Special_Char_Chk");
+        checkvalues.add("Min_value");
+        checkvalues.add("Max_value");
+        checkvalues.add("Avg");
+        model.addAttribute("checkvalues", checkvalues);
+
+
+// -------------------------------------------------------------------------
         List<MetaDataModel> stlist = metadataService.getAll();
         model.addAttribute("metadatamodels", stlist);
+
         return "Metadatamodels";
     }
 
@@ -93,6 +129,7 @@ public class MetaDataController {
         checkvalues.add("Max_value");
         checkvalues.add("Avg");
         model.addAttribute("checkvalues", checkvalues);
+
 
         return "add-metadatamodel";
     }
