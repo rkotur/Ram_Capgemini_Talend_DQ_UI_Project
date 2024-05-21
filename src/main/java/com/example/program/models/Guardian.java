@@ -1,21 +1,18 @@
 package com.example.program.models;
 
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
 
 @Embeddable
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name="DQ_APP_Guardian")
 @AttributeOverrides({
         @AttributeOverride(
                 name = "name",

@@ -4,18 +4,78 @@
   <meta charset="ISO-8859-1">
   <link href="/webjars/bootstrap/5.3.0/dist/css/bootstrap.css" rel="stylesheet"/>
   <script type="text/javascript" src="/webjars/bootstrap/5.3.0/dist/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/webjars/jquery/3.7.0/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/webjars/jquery/3.7.0/dist/jquery.min.js">  </script>
+	<script th:src="@{/js/Cascade_LOV_for_Schema_and_table.js}"></script>
   <title>Add Meta Data</title>
 </head>
 <body>
-<br><br><br>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	<div class="container">
+		<a class="navbar-brand" href="#"><h3>Capgemini & QLik</h3></a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
 
-<button class="btn btn-outline-dark">
-	<a th:href="@{addNew}">Add Metadata<i class="fas fa-wrench"></i></a>
-</button>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Logout</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
 
+<form action="#" th:object="${metadatamodel}" method="post" th:action="@{saveNew}" enctype="multipart/form-data">
+<table class="table table-bordered table-striped">
+	<tr> <td>
+		<table>
+		<tr>
+		<td>
+			<label for="schemaNames">Schema:</label>
+			</td><td>
+			<select id="dbschema" name="dbschema" th:field="*{dbschema}">
+				<option th:each="schema_name : ${schemaNames}" th:value="${schema_name}" th:text="${schema_name}">
+				</option>
 
-<table class="table table-stripped">
+			</select>
+		</td>
+			</tr>
+			<td>
+				<label for="schemaNames">Table:</label>
+			</td>
+		<td>
+			<select id="dbtable" name="dbtable" th:field="*{dbtable}">
+				<option th:each="table_name : ${tableNames}" th:value="${table_name}" th:text="${table_name}"></option>
+			</select>
+			<br>
+		</td>
+			</tr><tr>
+			<td>
+				<label for="schemaNames">Column:</label>
+			</td>
+		<td>
+			<select id="dbcolumn" name="dbcolumn" th:field="*{dbcolumn}" autofocus="false">
+				<option th:each="columns_Names : ${columnsNames}" th:value="${columns_Names}" th:text="${columns_Names}"></option>
+			</select>
+		</td>
+		</tr>
+		</table>
+		<td>
+			<select multiple class="form-select" id="dbcheck" name="dbcheck" th:field="*{dbcheck}" >
+				<option th:each="checkvalue  : ${checkvalues}" th:value="${checkvalue}" th:text="${checkvalue}">
+				</option>
+			</select>
+		</td>
+		<td>
+			<input class="btn btn-outline-dark" type="submit"  value="Add" Style="color:blue; text-decoration: underline"/>
+		</td>
+	</tr>
+</table>
+</form>
+<table class="table table-bordered table-striped">
 	<thead>
 	<tr>
 		<td>Id</td>
@@ -34,7 +94,7 @@
 			<td th:text="${metadatamodel.dbschema}"></td>
 			<td th:text="${metadatamodel.dbtable}"></td>
 			<td th:text="${metadatamodel.dbcolumn}"></td>
-			<td th:text="${metadatamodel.dbcheck}"></td>
+			<td th:text="${#strings.replace(metadatamodel.dbcheck,',',' &lt;br&gt; ')}"></td>
 <!--
 			<td> <button class="btn btn-outline-dark" type="button">
 				<a th:href="@{edit/__${metadatamodel.Id}__}">Edit</a>

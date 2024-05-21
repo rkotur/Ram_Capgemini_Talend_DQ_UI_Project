@@ -3,6 +3,7 @@ package com.example.program.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="DQ_Table_Schema")
 public class Schema {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
