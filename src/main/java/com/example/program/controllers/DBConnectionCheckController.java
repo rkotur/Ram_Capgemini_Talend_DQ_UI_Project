@@ -38,12 +38,21 @@ public class DBConnectionCheckController {
 
     @GetMapping("/getAll")
     public String getAll(Model model) {
+
         List<MetaDataModel> stlist = metadataService.getAll();
         model.addAttribute("metadatamodels", stlist);
-        //return "metadatamodels";
-        System.out.println("Hi Ram is call ing GetALL");
+
+//        ModelAndView modelAndView = new ModelAndView("getAll");
+//        modelAndView.addObject("connectionRequest", new DBConnectionRequest());
+          model.addAttribute("connectionRequest", new DBConnectionRequest());
+
         return "redirect:/Metadatamodels";
+        //return ModelAndView;
     }
+
+
+
+
 
     @GetMapping("/databaseconnectioncheck")
     public ModelAndView databaseconnectioncheck1() {

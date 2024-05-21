@@ -36,7 +36,7 @@ public class DBconnectionService {
                         connectionRequest.getPort() + "/" +
                         connectionRequest.getDbName();
         */
-        System.out.println("Ram..... URL:.."+url);
+        //System.out.println("Ram..... URL:.."+url);
 
         return dbConnectionUrl.equals(url)
                 && dbConnectionUserName.equals(connectionRequest.getUsername()) &&
