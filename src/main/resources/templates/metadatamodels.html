@@ -64,10 +64,15 @@
 		</tr>
 		</table>
 		<td>
-			<select multiple class="form-select" id="dbcheck" name="dbcheck" th:field="*{dbcheck}" >
-				<option th:each="checkvalue  : ${checkvalues}" th:value="${checkvalue}" th:text="${checkvalue}">
-				</option>
-			</select>
+<!--			<select multiple class="form-select" id="dbcheck" name="dbcheck" th:field="*{dbcheck}" >-->
+<!--				<option th:each="rulesnames  : ${rulesNames}" th:value="${rulesnames}" th:text="${rulesnames}">-->
+<!--				</option>-->
+<!--			</select>-->
+
+					<select multiple class="form-select" id="dbcheck" name="dbcheck" th:field="*{dbcheck}" >
+						<option th:each="rulemetanames  : ${ruleMetaNames}" th:value="${rulemetanames}" th:text="${rulemetanames}">
+						</option>
+					</select>
 		</td>
 		<td>
 			<input class="btn btn-outline-dark" type="submit"  value="Add" Style="color:blue; text-decoration: underline"/>
