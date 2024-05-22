@@ -17,6 +17,8 @@ import com.example.program.Services.MetaDataService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import com.example.program.repository.SchemaRepository;
+import com.example.program.repository.DQ_RulesRepository;
+
 // DatabaseConnectionCheck
 
 
@@ -26,6 +28,7 @@ public class MetaDataController {
 
     @Autowired(required=true)
     private MetaDataService metadataService;
+    private DQ_RulesRepository dq_rulesrepository;
     private final SchemaRepository schemaRepository;
 
     public MetaDataController(SchemaRepository schemaRepository) {
@@ -47,6 +50,9 @@ public class MetaDataController {
         MetaDataModel metadatamodel = new MetaDataModel();
         model.addAttribute("metadatamodel", metadatamodel);
 //-----------------------------------------------------------------------
+
+
+
         List<String> schemaNames =  new ArrayList<>();
         schemaRepository.getSchemas().forEach(e-> schemaNames.add(e.getName()));
         model.addAttribute("schemaNames", schemaNames);
@@ -59,22 +65,42 @@ public class MetaDataController {
         schemaRepository.getColumns("spoton","loading").forEach(e-> columnsNames.add(e.getName()));
         model.addAttribute("columnsNames", columnsNames);
 
+        /*
+        List<String> ruleMetaNames =  new ArrayList<>();
+        dq_rulesrepository.getRules().forEach(e-> ruleMetaNames.add(e.getName()));
+        model.addAttribute("ruleMetaNames", ruleMetaNames);
+        */
 
-        List<String> checkvalues = new ArrayList<>();
 
-        checkvalues.add("Null_Count");
-        checkvalues.add("Blank_Count");
-        checkvalues.add("Distinct_Count");
-        checkvalues.add("Start_Lower_Case");
-        checkvalues.add("Start_Upper_Case");
-        checkvalues.add("Alpha_Numeric_Chk");
-        checkvalues.add("Only_Numeric_Chk");
-        checkvalues.add("Email_Pattern_Chk");
-        checkvalues.add("Special_Char_Chk");
-        checkvalues.add("Min_value");
-        checkvalues.add("Max_value");
-        checkvalues.add("Avg");
-        model.addAttribute("checkvalues", checkvalues);
+       List<String> ruleMetaNames = new ArrayList<>();
+        ruleMetaNames.add("Age");
+        ruleMetaNames.add("AlphaNumeric Check");
+        ruleMetaNames.add("Amex_card");
+        ruleMetaNames.add("Avg Value");
+        ruleMetaNames.add("Bank Account number");
+        ruleMetaNames.add("BLANK Check");
+        ruleMetaNames.add("Cargo Weight");
+        ruleMetaNames.add("DISTINCT Count");
+        ruleMetaNames.add("Email");
+        ruleMetaNames.add("Email Pattern Check");
+        ruleMetaNames.add("Master_card");
+        ruleMetaNames.add("Max Value");
+        ruleMetaNames.add("Min Value");
+        ruleMetaNames.add("NULL Check");
+        ruleMetaNames.add("Numeric Check");
+        ruleMetaNames.add("Passport number");
+        ruleMetaNames.add("Phone number");
+        ruleMetaNames.add("ROW Count");
+        ruleMetaNames.add("Special Char Check");
+        ruleMetaNames.add("Start Lower Case");
+        ruleMetaNames.add("Start Upper Case");
+        ruleMetaNames.add("String Matches");
+        ruleMetaNames.add("Value Contains");
+        ruleMetaNames.add("Value Frequency");
+        ruleMetaNames.add("Value Greater Than Equals to");
+        ruleMetaNames.add("Value Not Contains");
+        ruleMetaNames.add("Visa_card");
+        model.addAttribute("ruleMetaNames", ruleMetaNames);
 
 
 // -------------------------------------------------------------------------
@@ -113,23 +139,34 @@ public class MetaDataController {
         schemaRepository.getColumns("spoton","loading").forEach(e-> columnsNames.add(e.getName()));
         model.addAttribute("columnsNames", columnsNames);
 
+/*
+        List<String> ruleNames = new ArrayList<>();
+        schemaRepository.getRules().forEach(e-> ruleNames.add(e.getName()));
+        //schemaRepository.getSchemas().forEach(e-> ruleNames.add(e.getName()));
+        model.addAttribute("ruleNames", ruleNames);
 
-        List<String> checkvalues = new ArrayList<>();
+        System.out.println("--- Ram printinh values ---- ");
+        for (String value : ruleNames) {
+            System.out.println(value);
+        }
+*/
 
-        checkvalues.add("Null_Count");
-        checkvalues.add("Blank_Count");
-        checkvalues.add("Distinct_Count");
-        checkvalues.add("Start_Lower_Case");
-        checkvalues.add("Start_Upper_Case");
-        checkvalues.add("Alpha_Numeric_Chk");
-        checkvalues.add("Only_Numeric_Chk");
-        checkvalues.add("Email_Pattern_Chk");
-        checkvalues.add("Special_Char_Chk");
-        checkvalues.add("Min_value");
-        checkvalues.add("Max_value");
-        checkvalues.add("Avg");
-        model.addAttribute("checkvalues", checkvalues);
-
+/*
+       List<String> ruleMetaNames = new ArrayList<>();
+        ruleMetaNames.add("Null_Count");
+        ruleMetaNames.add("Blank_Count");
+        ruleMetaNames.add("Distinct_Count");
+        ruleMetaNames.add("Start_Lower_Case");
+        ruleMetaNames.add("Start_Upper_Case");
+        ruleMetaNames.add("Alpha_Numeric_Chk");
+        ruleMetaNames.add("Only_Numeric_Chk");
+        ruleMetaNames.add("Email_Pattern_Chk");
+        ruleMetaNames.add("Special_Char_Chk");
+        ruleMetaNames.add("Min_value");
+        ruleMetaNames.add("Max_value");
+        ruleMetaNames.add("Avg");
+        model.addAttribute("ruleMetaNames", ruleMetaNames);
+*/
 
         return "add-metadatamodel";
     }

@@ -11,12 +11,18 @@ import java.util.List;
 @Repository
 public interface SchemaRepository extends JpaRepository<Schema, Long>  {
 
+
+    @Query(value="SELECT ROW_NUMBER() OVER(Order by rule_name) as id, upper(rule_name) as name FROM public.dq_table_check_val  group by rule_name Order by rule_name", nativeQuery = true)
+    List<Schema> getRules();
+
     @Query(value="SELECT ROW_NUMBER() OVER() as id, upper(schema_owner) as name FROM information_schema.schemata  group by schema_owner Order by schema_owner", nativeQuery = true)
     List<Schema> getSchemas();
+
     @Query(value="SELECT ROW_NUMBER() OVER() as id, upper(table_name) as name FROM information_schema.tables where upper(Table_catalog) = :TableSchema Order by table_name", nativeQuery = true)
     List<Schema> getTables(@Param("TableSchema") String TableSchema);
     @Query(value="SELECT ROW_NUMBER() OVER(Order by Column_Name ) as id, upper(Column_Name) as name FROM information_schema.columns where upper(Table_catalog) = :TableSchema and upper(Table_Name) = :TableName Group by Column_Name", nativeQuery = true)
     List<Schema> getColumns(@Param("TableSchema") String TableSchema, @Param("TableName") String TableName);
+
 
 }
 
