@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <link href="/webjars/bootstrap/5.3.0/dist/css/bootstrap.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/webjars/bootstrap/5.3.0/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/webjars/jquery/3.7.0/dist/jquery.min.js"></script>
+    <script th:src="@{/js/Cascade_LOV_for_Schema_and_table.js}"></script>
+    <title>Meta Data</title>
+</head>
+<body>
+<div align="center">
+
+    <form action="#" th:object="${metadatamodel}" method="post" th:action="@{saveNew}" enctype="multipart/form-data">
+        <div class="project-list single">
+            <fieldset>
+                <h3><u>Enter New Meta Data Information</u></h3>
+                <table>
+
+                    <!--
+                    <tr><td width="200" align="right">
+                        <label for="dbschema1">Schema Name1:</label>
+                        </td >
+                        <td align="left" width="300">
+                            <select class="form-control" id="dropDownList">
+                                <option value="0">select schema</option>
+                                <option th:each="schema : ${schemas}" th:value="${schema}" th:text="${schema}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                     -->
+
+
+
+                    <tr><td width="200" align="right">
+                        <label for="schemaNames">Select a Database:</label>
+                        <td align="left" width="300">
+                            <select id="dbschema" name="dbschema" th:field="*{dbschema}">
+                                <option th:each="schema_name : ${schemaNames}" th:value="${schema_name}" th:text="${schema_name}"></option>
+                            </select>
+                        </td></tr>
+
+                    <tr><td width="200" align="right">
+                        <label for="tableNames">Select a Table:</label>
+                    </td>
+                        <td align="left" width="300">
+                            <select id="dbtable" name="dbtable" th:field="*{dbtable}">
+                                <option th:each="table_name : ${tableNames}" th:value="${table_name}" th:text="${table_name}"></option>
+                            </select>
+                        </td></tr>
+
+                    <tr><td width="200" align="right">
+                        <label for="columnsNames">Select a Column:</label>
+                    </td>
+                        <td align="left" width="300">
+
+                            <select id="dbcolumn" name="dbcolumn" th:field="*{dbcolumn}" autofocus="false">
+                                <option th:each="columns_Names : ${columnsNames}" th:value="${columns_Names}" th:text="${columns_Names}"></option>
+                            </select>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td width="200" align="right">
+                            <label for="dbcheck">Select a Check:</label>
+                        </td>
+                        <td align="left" width="300">
+
+
+                            <select id="dbcheck" name="dbcheck" th:field="*{dbcheck}">
+                                <option th:each="checkvalue  : ${checkvalues}" th:value="${checkvalue}" th:text="${checkvalue}">
+                                </option>
+                            </select>
+
+                        </td>
+                    </tr>
+
+
+
+
+
+
+
+
+
+                    <!--                    <tr><td width="200" align="right">-->
+                    <!--                        <label for="name">Check:</label></td >-->
+                    <!--                        <td align="left" width="300">-->
+                    <!--                            <input type="text" th:field="*{checkvalue}" autofocus="false"/>-->
+                    <!--                        </td></tr>-->
+
+                    <tr><td width="200" align="right">
+                        <label for="name">Updated By:</label></td >
+                        <td align="left" width="300">
+                            <input type="text" th:field="*{updatedBy}"  autofocus="false"/>
+                        </td ></tr>
+                    <tr><td width="200" align="right">
+                        <label for="name">Updated On:</label></td >
+                        <td align="left" width="300">
+                            <input type="date" th:field="*{updatedOn}"  autofocus="false" />
+                        </td></tr><tr>
+
+                </tr><td align="center" colspan="3">
+                    <input class="btn btn-outline-dark" type="submit" Style="color:blue; text-decoration: underline"/>
+                    <input class="btn btn-outline-dark" type="reset"  Style="color:blue; text-decoration: underline"/>
+                    <button class="btn btn-outline-dark" type="button">
+                        <a th:href="@{\metadatamodels\getAll}">Cancel</a>
+                    </button>
+                </td ></tr></table>
+            </fieldset>
+        </div>
+    </form>
+</div>
+</body>
+</html>

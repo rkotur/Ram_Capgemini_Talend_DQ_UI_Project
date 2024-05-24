@@ -1,18 +1,13 @@
 package com.example.program.models;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
-import jakarta.persistence.*;
+import org.hibernate.annotations.Table;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import static freemarker.template.utility.StringUtil.replace;
+import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="DQ_Table_Metadata")
 public class MetaDataModel {
 
     @jakarta.persistence.Id
@@ -21,17 +16,6 @@ public class MetaDataModel {
     private String dbtable;
     private String dbcolumn;
     private String dbcheck;
-
-    private String updatedBy;
-
-    //@Column(nullable = false, columnDefinition = "Date default 'YourDefaultValue'")
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime updatedOn;
-
-
-
-
-
 
     public Integer getId() {
         return Id;
@@ -81,15 +65,18 @@ public class MetaDataModel {
         this.updatedBy = updatedBy;
     }
 
-    public LocalDateTime getUpdatedOn() {
+    public Date getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(LocalDateTime updatedOn) {
+    public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
 
+    private String updatedBy;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date updatedOn;
 
     public MetaDataModel() {
 
@@ -98,7 +85,7 @@ public class MetaDataModel {
     public MetaDataModel(Integer id, String dbschema, String dbtable,
                          String dbcolumn,String dbcheck,
                          String updatedBy,
-                         LocalDateTime updatedOn) {
+                         Date updatedOn) {
         super();
         Id = id;
         this.dbschema = dbschema;
@@ -113,21 +100,8 @@ public class MetaDataModel {
     public String toString() {
         return "MetaDataModel [Id=" + Id + ", dbschema=" + dbschema + ", dbtable=" + dbtable + ", "
                 + ", dbcolumn=" + dbcolumn + ", "
-                + ", dbcheck=" + dbcheck+ ", "
+                + ", dbcheck=" + dbcheck + ", "
                 + "updatedBy=" + updatedBy + ", updatedOn=" + updatedOn + "]";
-    }
-
-    // Set default value , if it is null
-    @PreUpdate
-    public void updateDefaultValueIfNull() {
-        if (this.updatedBy == null) {
-            this.updatedBy = "Admin";
-        }
-    }
-    @PrePersist
-    public void prePersist() {
-        this.updatedOn = LocalDateTime.now();
-        this.updatedBy = "Admin";
     }
 
 }
