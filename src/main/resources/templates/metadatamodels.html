@@ -29,11 +29,11 @@
 </nav>
 
 <form action="#" th:object="${metadatamodel}" method="post" th:action="@{saveNew}" enctype="multipart/form-data">
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped" style="width: 100%">
 	<tr> <td>
 		<table>
 		<tr>
-		<td>
+		<td valign="top">
 			<label for="schemaNames">Schema:</label>
 			</td><td>
 			<select id="dbschema" name="dbschema" th:field="*{dbschema}">
@@ -68,11 +68,15 @@
 <!--				<option th:each="rulesnames  : ${rulesNames}" th:value="${rulesnames}" th:text="${rulesnames}">-->
 <!--				</option>-->
 <!--			</select>-->
-
-					<select multiple class="form-select" id="dbcheck" name="dbcheck" th:field="*{dbcheck}" >
+		           <table>
+					   <tr>
+						   <td> <label for="checkname">Check:</label> </td>
+					<td><select multiple class="form-select" id="dbcheck" name="dbcheck" th:field="*{dbcheck}" >
 						<option th:each="rulemetanames  : ${ruleMetaNames}" th:value="${rulemetanames}" th:text="${rulemetanames}">
 						</option>
-					</select>
+					</select> </td>
+					   </tr>
+		      </table>
 		</td>
 		<td>
 			<input class="btn btn-outline-dark" type="submit"  value="Add" Style="color:blue; text-decoration: underline"/>
