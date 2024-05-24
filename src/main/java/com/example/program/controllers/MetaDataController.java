@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.program.Services.DQ_RulesService;
+import com.example.program.models.DQ_RulesModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,15 @@ public class MetaDataController {
 
     @Autowired(required=true)
     private MetaDataService metadataService;
-    private DQ_RulesRepository dq_rulesrepository;
+
+    @Autowired(required=true)
+    private DQ_RulesService dq_rulesservice;
+
+    private final DQ_RulesRepository dq_rulesrepository;
     private final SchemaRepository schemaRepository;
 
-    public MetaDataController(SchemaRepository schemaRepository) {
+    public MetaDataController(DQ_RulesRepository dqRulesrepository, SchemaRepository schemaRepository) {
+        this.dq_rulesrepository = dqRulesrepository;
         this.schemaRepository = schemaRepository;
     }
 
@@ -51,8 +58,6 @@ public class MetaDataController {
         model.addAttribute("metadatamodel", metadatamodel);
 //-----------------------------------------------------------------------
 
-
-
         List<String> schemaNames =  new ArrayList<>();
         schemaRepository.getSchemas().forEach(e-> schemaNames.add(e.getName()));
         model.addAttribute("schemaNames", schemaNames);
@@ -65,13 +70,14 @@ public class MetaDataController {
         schemaRepository.getColumns("spoton","loading").forEach(e-> columnsNames.add(e.getName()));
         model.addAttribute("columnsNames", columnsNames);
 
-        /*
-        List<String> ruleMetaNames =  new ArrayList<>();
-        dq_rulesrepository.getRules().forEach(e-> ruleMetaNames.add(e.getName()));
-        model.addAttribute("ruleMetaNames", ruleMetaNames);
-        */
+
+        List<String> ruleMetaNames1 =  new ArrayList<>();
+        dq_rulesrepository.getRules().forEach(e-> ruleMetaNames1.add(e.getName()));
+        //schemaRepository.getRules().forEach(e-> ruleMetaNames1.add(e.getName()));
+        model.addAttribute("ruleMetaNames", ruleMetaNames1);
 
 
+/*
        List<String> ruleMetaNames = new ArrayList<>();
         ruleMetaNames.add("Age");
         ruleMetaNames.add("AlphaNumeric Check");
@@ -101,11 +107,17 @@ public class MetaDataController {
         ruleMetaNames.add("Value Not Contains");
         ruleMetaNames.add("Visa_card");
         model.addAttribute("ruleMetaNames", ruleMetaNames);
-
+*/
 
 // -------------------------------------------------------------------------
         List<MetaDataModel> stlist = metadataService.getAll();
         model.addAttribute("metadatamodels", stlist);
+
+        // dq_rulesservice
+
+        List<DQ_RulesModel> stlist1 = dq_rulesservice.getAll();
+        model.addAttribute("dq_rulesmodel", stlist1);
+
 
         return "Metadatamodels";
     }
