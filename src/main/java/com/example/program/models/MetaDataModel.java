@@ -2,12 +2,12 @@ package com.example.program.models;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="DQ_Table_Metadata")
 public class MetaDataModel {
 
     @jakarta.persistence.Id
@@ -16,6 +16,18 @@ public class MetaDataModel {
     private String dbtable;
     private String dbcolumn;
     private String dbcheck;
+
+    private String dbsource;
+
+    public String getDbsource() {
+        return dbsource;
+    }
+
+    public void setDbsource(String dbsource) {
+        this.dbsource = dbsource;
+    }
+
+
 
     public Integer getId() {
         return Id;
@@ -83,7 +95,7 @@ public class MetaDataModel {
     }
 
     public MetaDataModel(Integer id, String dbschema, String dbtable,
-                         String dbcolumn,String dbcheck,
+                         String dbcolumn,String dbcheck,String dbsource,
                          String updatedBy,
                          Date updatedOn) {
         super();
@@ -92,6 +104,7 @@ public class MetaDataModel {
         this.dbtable = dbtable;
         this.dbcolumn = dbcolumn;
         this.dbcheck = dbcheck;
+        this.dbsource = dbsource;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
     }
@@ -101,6 +114,7 @@ public class MetaDataModel {
         return "MetaDataModel [Id=" + Id + ", dbschema=" + dbschema + ", dbtable=" + dbtable + ", "
                 + ", dbcolumn=" + dbcolumn + ", "
                 + ", dbcheck=" + dbcheck + ", "
+                + ", dbsource=" + dbsource + ", "
                 + "updatedBy=" + updatedBy + ", updatedOn=" + updatedOn + "]";
     }
 

@@ -19,18 +19,24 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-auto">
-
 				<li class="nav-item">
-					<a class="nav-link" href="#">Logout</a>
+					<a class="nav-link" href="/Main/navigation">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/Login">Logout</a>
 				</li>
 			</ul>
 		</div>
 	</div>
 </nav>
 
+<h4>Welcome to <span th:text="${parameter}"></span></h4>
+
+
 <form action="#" th:object="${metadatamodel}" method="post" th:action="@{saveNew}" enctype="multipart/form-data">
 <table class="table table-bordered table-striped" style="width: 100%">
 	<tr> <td>
+
 		<table>
 		<tr>
 		<td valign="top">
@@ -68,6 +74,9 @@
 <!--				<option th:each="rulesnames  : ${rulesNames}" th:value="${rulesnames}" th:text="${rulesnames}">-->
 <!--				</option>-->
 <!--			</select>-->
+
+		      <input type="hidden" id="dbsource" name="dbsource" th:value="${parameter}">
+
 		           <table>
 					   <tr>
 						   <td> <label for="checkname">Check:</label> </td>
@@ -96,14 +105,15 @@
 		<td>Remove</td>
 	</tr>
 	</thead>
-	<tr th:each="metadatamodel:${metadatamodels}">
+	<tr th:each="metadatamodel:${metadatamodels}" th:if="${metadatamodel.dbsource == parameter}">
 		<form action="#" method="post" th:action="@{delete/__${metadatamodel.Id}__}">
-			<td th:text="${metadatamodel.Id}"></td>
 
-			<td th:text="${metadatamodel.dbschema}"></td>
-			<td th:text="${metadatamodel.dbtable}"></td>
-			<td th:text="${metadatamodel.dbcolumn}"></td>
-			<td th:text="${metadatamodel.dbcheck}"></td>
+					<td th:text="${metadatamodel.Id}"></td>
+					<td th:text="${metadatamodel.dbschema}"></td>
+					<td th:text="${metadatamodel.dbtable}"></td>
+					<td th:text="${metadatamodel.dbcolumn}"></td>
+					<td th:text="${metadatamodel.dbcheck}"></td>
+
 
 <!--		<td th:text="${#strings.replace(metadatamodel.dbcheck,',',' &lt;br&gt; ')}"></td>-->
 <!--

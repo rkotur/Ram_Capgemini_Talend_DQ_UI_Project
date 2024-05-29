@@ -527,9 +527,9 @@
                 <!--
                 <button class="btn solid"><a href="Profiling_Schema.html">profiling</a></button>
                 -->
-                <button class="btn solid"><a th:href="@{/metadata/getAll}">profiling</a></button>
+                <button class="btn solid"><a th:href="@{/metadata/getAll?trans=1}">profiling</a></button>
                 <br>
-                <button class="btn solid"><a href="@{/metadata/getAll}">custom</a></button>
+                <button class="btn solid"><a th:href="@{/metadata/getAll?trans=2}">custom</a></button>
 
            <!-- </form> -->
         </div>
