@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.program.Services.DBConnectionRequest;
 import com.example.program.Services.DQ_RulesService;
 import com.example.program.models.DQ_RulesModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,8 @@ import com.example.program.Services.MetaDataService;
 import jakarta.servlet.http.HttpServletResponse;
 import com.example.program.repository.SchemaRepository;
 import com.example.program.repository.DQ_RulesRepository;
+
+import com.example.program.repository.CallSPsRepository;
 
 // DatabaseConnectionCheck
 
@@ -52,11 +57,32 @@ public class MetaDataController {
 
     //@RequestMapping(value="/getAll", method = RequestMethod.POST)
     @GetMapping("/getAll")
-    public String getAll(Model model) {
+    public String getAll(Model model, @RequestParam String trans, @ModelAttribute DBConnectionRequest connectionRequest, HttpSession session) {
+
+
+//-----------------------------------------------------------------------
+
+
+
+        System.out.println("------------------- @GetMapping(\"/getAll\") --------------------------------------");
+        System.out.println(session.getAttribute("S_DB_Name"));
+        System.out.println(session.getAttribute("S_DB_HostName"));
+        System.out.println("---------------------------------------------------------");
+// ---------------------------------------------------------------------------
+
+        model.addAttribute("parameter",(trans.equals("1"))?"Profiling":"Custom");
+
+        session.setAttribute("Parameter",trans);
 
         MetaDataModel metadatamodel = new MetaDataModel();
+       // model.addAttribute("metadatamodel", metadatamodel.getDbsource().equals(trans.equals("1")?"Profiling":"Custom"));
+
         model.addAttribute("metadatamodel", metadatamodel);
-//-----------------------------------------------------------------------
+
+
+
+
+
 
         List<String> schemaNames =  new ArrayList<>();
         schemaRepository.getSchemas().forEach(e-> schemaNames.add(e.getName()));
@@ -71,10 +97,10 @@ public class MetaDataController {
         model.addAttribute("columnsNames", columnsNames);
 
 
-        List<String> ruleMetaNames1 =  new ArrayList<>();
-        dq_rulesrepository.getRules().forEach(e-> ruleMetaNames1.add(e.getName()));
-        //schemaRepository.getRules().forEach(e-> ruleMetaNames1.add(e.getName()));
-        model.addAttribute("ruleMetaNames", ruleMetaNames1);
+        List<String> ruleMetaNames =  new ArrayList<>();
+        String v_rule_type = trans.equals("1")?"DQ Profiling":"DQ Custom";
+        dq_rulesrepository.getRules(v_rule_type).forEach(e-> ruleMetaNames.add(e.getName()));
+        model.addAttribute("ruleMetaNames", ruleMetaNames);
 
 
 /*
@@ -125,14 +151,9 @@ public class MetaDataController {
 
 
     @GetMapping("/addNew")
-    public String newMetaDataModel(Model model) {
+    public String newMetaDataModel(@ModelAttribute DBConnectionRequest connectionRequest, Model model) {
         MetaDataModel metadatamodel = new MetaDataModel();
         model.addAttribute("metadatamodel", metadatamodel);
-
-
-
-
-
 
 
         //List<String> databaseNames = schemaRepository.findAllschema_name();
@@ -224,18 +245,65 @@ public class MetaDataController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteMetaDataModel(@PathVariable("id") int id) {
+    public String deleteMetaDataModel(@PathVariable("id") int id, HttpSession session,MetaDataModel metadatamodel) {
+
+       String i = (String) session.getAttribute("Parameter");
+
+
+
+
+       // ---- DELETE Call SPs -----------
+        try {
+            List v_ret_value;
+            v_ret_value = callspsRepository.get_pro_update_schema(i,"DELETE",metadataService.getMetaDataModel(id).getDbschema(),metadataService.getMetaDataModel(id).getDbtable(),metadataService.getMetaDataModel(id).getDbcolumn());
+            System.out.println("-----------"+i);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       // -- End of Delete call SPs --
+
+
+
+
+
         metadataService.delete(id);
-        return "redirect:/metadata/getAll";
+        return "redirect:/metadata/getAll?trans="+i;
     }
+
+    @Autowired
+    private CallSPsRepository callspsRepository;
+    private JdbcTemplate jdbcTemplate;
 
     @PostMapping("/saveNew")
     public String insertMetaDataModel(
-            @ModelAttribute(value="metadatamodel") MetaDataModel metadatamodel) throws IOException {
+            @ModelAttribute(value="metadatamodel") MetaDataModel metadatamodel,  HttpSession session
+            //,@RequestParam String trans
+    ) throws IOException {
 
         metadataService.insert(metadatamodel);
-        return "redirect:/metadata/getAll";
+        String i = (String) session.getAttribute("Parameter");
+
+
+        // ----------- SP Call for Insert Records -----
+            try {
+
+                System.out.println("-----Source------"+i);
+
+
+                List v_ret_value;
+                v_ret_value = callspsRepository.get_pro_update_schema(i,"INSERT", metadatamodel.getDbschema(),metadatamodel.getDbtable(),metadatamodel.getDbcolumn());
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+        // -------End of SP Call  ----------
+
+
+
+
+        return "redirect:/metadata/getAll?trans="+i;
     }
+
+
 
     @PostMapping("/update/{id}")
     public String updateMetaDataModel(

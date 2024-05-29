@@ -9,6 +9,7 @@ import com.example.program.Services.*;
 import com.example.program.models.MetaDataModel;
 import com.example.program.Services.MetaDataService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,12 +81,16 @@ public class DBConnectionCheckController {
 
     @PostMapping("/test_connection")
     public ModelAndView testConnection(@ModelAttribute DBConnectionRequest connectionRequest,
-                                       Model model) {
+                                       Model model, HttpSession session) {
 
         try {
             boolean isConnected = dBconnectionService.testConnection(connectionRequest);
             if (isConnected) {
                 System.out.println("It connected...");
+
+                session.setAttribute("S_DB_Name",connectionRequest.getDatabase());
+                session.setAttribute("S_DB_HostName",connectionRequest.getHostname());
+
                 //return new ModelAndView("redirect:/metadata/getAll");
                 return new ModelAndView("redirect:/Main/navigation");
             } else {
