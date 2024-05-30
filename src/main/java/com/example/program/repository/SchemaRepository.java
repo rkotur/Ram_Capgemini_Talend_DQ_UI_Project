@@ -12,13 +12,13 @@ import java.util.List;
 public interface SchemaRepository extends JpaRepository<Schema, Long>  {
 
 
-    @Query(value="SELECT ROW_NUMBER() OVER() as id, upper(schema_owner) as name FROM information_schema.schemata  group by schema_owner Order by schema_owner", nativeQuery = true)
+    @Query(value="SELECT ROW_NUMBER() OVER() as id, upper(schema_name) as name FROM information_schema.schemata  group by schema_name Order by schema_name", nativeQuery = true)
     List<Schema> getSchemas();
 
-    @Query(value="SELECT ROW_NUMBER() OVER() as id, upper(table_name) as name FROM information_schema.tables where upper(Table_catalog) = :TableSchema Order by table_name", nativeQuery = true)
+    @Query(value="SELECT ROW_NUMBER() OVER() as id, upper(table_name) as name FROM information_schema.tables where upper(table_schema) = upper(:TableSchema) Order by table_name", nativeQuery = true)
     List<Schema> getTables(@Param("TableSchema") String TableSchema);
 
-    @Query(value="SELECT ROW_NUMBER() OVER(Order by Column_Name ) as id, upper(Column_Name) as name FROM information_schema.columns where upper(Table_catalog) = :TableSchema and upper(Table_Name) = :TableName Group by Column_Name", nativeQuery = true)
+    @Query(value="SELECT ROW_NUMBER() OVER(Order by Column_Name ) as id, upper(Column_Name) as name FROM information_schema.columns where upper(Table_schema) = :TableSchema and upper(Table_Name) = :TableName Group by Column_Name", nativeQuery = true)
     List<Schema> getColumns(@Param("TableSchema") String TableSchema, @Param("TableName") String TableName);
 
 
