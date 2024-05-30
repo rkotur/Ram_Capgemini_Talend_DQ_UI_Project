@@ -85,11 +85,16 @@ public class DBConnectionCheckController {
 
         try {
             boolean isConnected = dBconnectionService.testConnection(connectionRequest);
+
+
             if (isConnected) {
                 System.out.println("It connected...");
 
+                session.setAttribute("S_DBConnection_Name","postgres");
                 session.setAttribute("S_DB_Name",connectionRequest.getDatabase());
+                session.setAttribute("S_DB_Port",connectionRequest.getPort());
                 session.setAttribute("S_DB_HostName",connectionRequest.getHostname());
+                session.setAttribute("S_DB_User",connectionRequest.getUsername());
 
                 //return new ModelAndView("redirect:/metadata/getAll");
                 return new ModelAndView("redirect:/Main/navigation");

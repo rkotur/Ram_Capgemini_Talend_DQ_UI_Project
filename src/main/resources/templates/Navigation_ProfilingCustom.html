@@ -101,7 +101,7 @@
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  left: 75%;
+  left: 95%;
   width: 50%;
   transition: 1s 0.7s ease-in-out;
   display: grid;
@@ -234,7 +234,7 @@
   h3 {
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-left: -100px;
+  margin-left: -65px;
   }
 
 
@@ -518,19 +518,21 @@
   }
   </style>
 </head>
+
 <body>
 <div class="container">
     <div class="forms-container">
         <div class="signin-signupsec2">
             <!-- <form action="" class="sign-in-form"> -->
-                <!--
-                <button class="btn solid"><a href="Profiling_Schema.html">profiling</a></button>
-                -->
-                <button class="btn solid"><a th:href="@{/metadata/getAll?trans=1}">profiling</a></button>
-                <br>
-                <button class="btn solid"><a th:href="@{/metadata/getAll?trans=2}">custom</a></button>
+            <!--
+            <button class="btn solid"><a href="Profiling_Schema.html">profiling</a></button>
+            -->
+            <h3>DATA QUALITY AS A SERVICE</h3>
+            <button class="btn solid"><a th:href="@{/metadata/getAll?trans=1}">Data Profiling</a></button>
+            <br>
+            <button class="btn solid"><a th:href="@{/metadata/getAll?trans=2}">Custom DQ Checks</a></button>
 
-           <!-- </form> -->
+            <!-- </form> -->
         </div>
     </div>
     <div class="panels-container">

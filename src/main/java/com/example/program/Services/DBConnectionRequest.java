@@ -29,4 +29,6 @@ public class DBConnectionRequest {
     private String database;
     private String dbName;
 
+    private String dbsource;
+
 }

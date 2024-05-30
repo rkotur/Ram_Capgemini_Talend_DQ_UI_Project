@@ -248,14 +248,17 @@ public class MetaDataController {
     public String deleteMetaDataModel(@PathVariable("id") int id, HttpSession session,MetaDataModel metadatamodel) {
 
        String i = (String) session.getAttribute("Parameter");
-
+       String S_DBConnection_Name = (String)  session.getAttribute("S_DBConnection_Name");
 
 
 
        // ---- DELETE Call SPs -----------
         try {
+
+
+
             List v_ret_value;
-            v_ret_value = callspsRepository.get_pro_update_schema(i,"DELETE",metadataService.getMetaDataModel(id).getDbschema(),metadataService.getMetaDataModel(id).getDbtable(),metadataService.getMetaDataModel(id).getDbcolumn());
+            v_ret_value = callspsRepository.get_pro_update_schema(S_DBConnection_Name,i,"DELETE",metadataService.getMetaDataModel(id).getDbschema(),metadataService.getMetaDataModel(id).getDbtable(),metadataService.getMetaDataModel(id).getDbcolumn());
             System.out.println("-----------"+i);
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,6 +285,7 @@ public class MetaDataController {
 
         metadataService.insert(metadatamodel);
         String i = (String) session.getAttribute("Parameter");
+        String S_DBConnection_Name = (String)  session.getAttribute("S_DBConnection_Name");
 
 
         // ----------- SP Call for Insert Records -----
@@ -291,7 +295,7 @@ public class MetaDataController {
 
 
                 List v_ret_value;
-                v_ret_value = callspsRepository.get_pro_update_schema(i,"INSERT", metadatamodel.getDbschema(),metadatamodel.getDbtable(),metadatamodel.getDbcolumn());
+                v_ret_value = callspsRepository.get_pro_update_schema(S_DBConnection_Name,i,"INSERT", metadatamodel.getDbschema(),metadatamodel.getDbtable(),metadatamodel.getDbcolumn());
             } catch (Exception e) {
               e.printStackTrace();
             }
