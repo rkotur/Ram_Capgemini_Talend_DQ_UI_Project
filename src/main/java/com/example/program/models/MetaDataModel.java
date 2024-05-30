@@ -12,6 +12,16 @@ public class MetaDataModel {
 
     @jakarta.persistence.Id
     private Integer Id;
+    private String dbname;
+
+    public String getdbname() {
+        return dbname;
+    }
+
+    public void setdbname(String dbname) {
+        this.dbname = dbname;
+    }
+
     private String dbschema;
     private String dbtable;
     private String dbcolumn;
@@ -94,12 +104,13 @@ public class MetaDataModel {
 
     }
 
-    public MetaDataModel(Integer id, String dbschema, String dbtable,
+    public MetaDataModel(Integer id, String dbname,String dbschema, String dbtable,
                          String dbcolumn,String dbcheck,String dbsource,
                          String updatedBy,
                          Date updatedOn) {
         super();
         Id = id;
+        this.dbname = dbname;
         this.dbschema = dbschema;
         this.dbtable = dbtable;
         this.dbcolumn = dbcolumn;
@@ -111,7 +122,7 @@ public class MetaDataModel {
 
     @Override
     public String toString() {
-        return "MetaDataModel [Id=" + Id + ", dbschema=" + dbschema + ", dbtable=" + dbtable + ", "
+        return "MetaDataModel [Id=" + Id + ", dbname=" + dbname + ", dbschema=" + dbschema + ", dbtable=" + dbtable + ", "
                 + ", dbcolumn=" + dbcolumn + ", "
                 + ", dbcheck=" + dbcheck + ", "
                 + ", dbsource=" + dbsource + ", "

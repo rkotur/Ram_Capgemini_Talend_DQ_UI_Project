@@ -8,7 +8,7 @@
             src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"
     ></script>
-<style>
+    <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
 
 * {
@@ -235,7 +235,6 @@ form.sign-in-form {
 h3 {
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-left: -100px;
 }
 
 
@@ -524,17 +523,20 @@ body {
     <div class="forms-container">
         <div class="signin-signup">
             <form th:action="${login}" method="post" th:object="${user}" class="sign-in-form">
+                <h3>DATA QUALITY AS A SERVICE <br><center>POWERED BY</center> </h3>
                 <div class="image-container">
                     <table>
                         <tbody class="tablepicture">
                         <tr>
-                            <td><img src="https://www.capgemini.com/wp-content/themes/capgemini2020/assets/images/logo.svg" alt="description of the image">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                            <td><img src="https://res.cloudinary.com/talend/image/upload/q_auto/v1700581361/qlik/testing/glossary/Qlik_Logo_Trademark_2_Color_Positive_RGB_2_itwa1t_cibcft.svg" alt=""></td>
+                            <td> <img src="https://www.capgemini.com/wp-content/themes/capgemini2020/assets/images/logo.svg" alt="description of the image">&nbsp;&nbsp;</td>
+                            <td>  <img src="https://res.cloudinary.com/talend/image/upload/q_auto/v1700581361/qlik/testing/glossary/Qlik_Logo_Trademark_2_Color_Positive_RGB_2_itwa1t_cibcft.svg" alt=""></td>
+                        </tr>
+                        <tr>
+
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <h2 class="title">Sign In</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
                     <input type="text" id="username" name="username" value="admin@admin.com"  placeholder="Email" />
@@ -555,9 +557,9 @@ body {
                 <div th:if="${param.error}">
                     <div class="alert alert-danger">Invalid Email and Password.</div>
                 </div>
-<!--                <div th:if="${#feild.hasGlobalErrors()}">-->
-<!--                    <p th:each="err : ${#feild.errors('global')}" th:text=${err} class="text-error"></p>-->
-<!--                </div>-->
+                <!--                <div th:if="${#feild.hasGlobalErrors()}">-->
+                <!--                    <p th:each="err : ${#feild.errors('global')}" th:text=${err} class="text-error"></p>-->
+                <!--                </div>-->
                 <div>
                     <button type="submit" class="btn solid">Login  </button>
 
