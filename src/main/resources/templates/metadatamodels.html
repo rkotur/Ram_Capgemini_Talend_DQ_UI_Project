@@ -8,11 +8,12 @@
 	<script th:src="@{/js/Cascade_LOV_for_Schema_and_table.js}"></script>
   <title>Add Meta Data</title>
 </head>
+
 <body>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 	<div class="container">
-		<a class="navbar-brand" href="#"><h3></h3></a>
+		<a class="navbar-brand" href="#"><h3>DATA QUALITY AS A SERVICE</h3></a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
 				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -20,10 +21,8 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
-					<a class="nav-link" href="/Main/navigation">Home</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/Login">Logout</a>
 				</li>
 			</ul>
 		</div>
@@ -42,7 +41,7 @@
 		<td valign="top">
 			<label for="schemaNames">Schema:</label>
 			</td><td>
-			<select id="dbschema" name="dbschema" th:field="*{dbschema}">
+			<select id="dbschema" name="dbschema" th:field="*{dbschema}" required>
 				<option th:each="schema_name : ${schemaNames}" th:value="${schema_name}" th:text="${schema_name}">
 				</option>
 
@@ -53,17 +52,19 @@
 				<label for="schemaNames">Table:</label>
 			</td>
 		<td>
-			<select id="dbtable" name="dbtable" th:field="*{dbtable}">
+			<select id="dbtable" name="dbtable" th:field="*{dbtable}" required>
 				<option th:each="table_name : ${tableNames}" th:value="${table_name}" th:text="${table_name}"></option>
 			</select>
 			<br>
 		</td>
-			</tr><tr>
+			</tr> <tr>
+
 			<td>
 				<label for="schemaNames">Column:</label>
 			</td>
 		<td>
-			<select id="dbcolumn" name="dbcolumn" th:field="*{dbcolumn}" autofocus="false">
+			<!-- <select id="dbcolumn" name="dbcolumn" th:field="*{dbcolumn}" autofocus="false" required> -->
+			<select id="dbcolumn" name="dbcolumn" th:field="*{dbcolumn}" required>
 				<option th:each="columns_Names : ${columnsNames}" th:value="${columns_Names}" th:text="${columns_Names}"></option>
 			</select>
 		</td>
@@ -93,10 +94,13 @@
 	</tr>
 </table>
 </form>
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped" th:with="inx=0" >
 	<thead>
 	<tr>
+		<!--
+		<td>Id1</td>
 		<td>Id</td>
+		-->
 		<td>Schema</td>
 		<td>Table Name</td>
 		<td>Column Name</td>
@@ -105,10 +109,11 @@
 		<td>Remove</td>
 	</tr>
 	</thead>
-	<tr th:each="metadatamodel:${metadatamodels}" th:if="${metadatamodel.dbsource == parameter}">
+	<tr th:each="metadatamodel, iterStat :${metadatamodels}" th:if="${metadatamodel.dbsource == parameter}" th:with="inx=${inx + 1}">
 		<form action="#" method="post" th:action="@{delete/__${metadatamodel.Id}__}">
 
-					<td th:text="${metadatamodel.Id}"></td>
+              <div>
+					<td th:hidden="${metadatamodel.Id}"></td>
 					<td th:text="${metadatamodel.dbschema}"></td>
 					<td th:text="${metadatamodel.dbtable}"></td>
 					<td th:text="${metadatamodel.dbcolumn}"></td>
@@ -127,6 +132,7 @@
 					Delete
 				</button>
 			</td>
+			  </div>
 		</form >
 	</tr>
 </table>

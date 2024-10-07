@@ -23,12 +23,16 @@ public class MetaDataService {
 
     public void insert(MetaDataModel metadatamodel) {
         int max = 0;
-        Iterable<MetaDataModel> list = metasatarepository.findAll();
-        for(MetaDataModel stud : list){
-            if(stud.getId() > max) max = stud.getId();
+
+        if(!(metadatamodel.getDbcolumn().isEmpty() && metadatamodel.getDbschema().isEmpty() && metadatamodel.getDbtable().isEmpty())) {
+
+            Iterable<MetaDataModel> list = metasatarepository.findAll();
+            for (MetaDataModel stud : list) {
+                if (stud.getId() > max) max = stud.getId();
+            }
+            metadatamodel.setId(max + 1);
+            metasatarepository.save(metadatamodel);
         }
-        metadatamodel.setId(max + 1);
-        metasatarepository.save(metadatamodel);
     }
 
     public void update(int id, MetaDataModel newmetadatamodel) {

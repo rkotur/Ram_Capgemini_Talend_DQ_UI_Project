@@ -24,8 +24,6 @@ import java.util.function.Function;
 @RestController
 @SpringBootApplication
 public class DemoApplication {
-
-
 	public static SchemaRepository schemaRepository;
 
 	@Autowired

@@ -17,20 +17,18 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurity {
-
     @Autowired
     private UserDetailsService userDetailsService;
-
     @Bean
     public static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/register/**").permitAll()
+                                .requestMatchers("/navigation/**").permitAll()
                                 .requestMatchers("/index").permitAll() // Permit Main Page
                                 .requestMatchers("/login").permitAll() // Permit Main Page
                                 .requestMatchers("/webjars/**").permitAll() // Permit all CSS
@@ -40,6 +38,7 @@ public class SpringSecurity {
                                 .requestMatchers("/Main/metadatamodels/**").authenticated() // Dont Permit without login
                                 .requestMatchers("/metadata/**").authenticated()
                                 .requestMatchers("/users").hasRole("ADMIN")
+
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")

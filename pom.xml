@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.program1</groupId>
 	<artifactId>program1</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHO/T</version>
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -89,7 +89,7 @@
 		    <artifactId>spring-boot-starter-data-jpa</artifactId>
 		    <version>3.1.0</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>

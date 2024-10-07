@@ -103,37 +103,6 @@ public class MetaDataController {
         model.addAttribute("ruleMetaNames", ruleMetaNames);
 
 
-/*
-       List<String> ruleMetaNames = new ArrayList<>();
-        ruleMetaNames.add("Age");
-        ruleMetaNames.add("AlphaNumeric Check");
-        ruleMetaNames.add("Amex_card");
-        ruleMetaNames.add("Avg Value");
-        ruleMetaNames.add("Bank Account number");
-        ruleMetaNames.add("BLANK Check");
-        ruleMetaNames.add("Cargo Weight");
-        ruleMetaNames.add("DISTINCT Count");
-        ruleMetaNames.add("Email");
-        ruleMetaNames.add("Email Pattern Check");
-        ruleMetaNames.add("Master_card");
-        ruleMetaNames.add("Max Value");
-        ruleMetaNames.add("Min Value");
-        ruleMetaNames.add("NULL Check");
-        ruleMetaNames.add("Numeric Check");
-        ruleMetaNames.add("Passport number");
-        ruleMetaNames.add("Phone number");
-        ruleMetaNames.add("ROW Count");
-        ruleMetaNames.add("Special Char Check");
-        ruleMetaNames.add("Start Lower Case");
-        ruleMetaNames.add("Start Upper Case");
-        ruleMetaNames.add("String Matches");
-        ruleMetaNames.add("Value Contains");
-        ruleMetaNames.add("Value Frequency");
-        ruleMetaNames.add("Value Greater Than Equals to");
-        ruleMetaNames.add("Value Not Contains");
-        ruleMetaNames.add("Visa_card");
-        model.addAttribute("ruleMetaNames", ruleMetaNames);
-*/
 
 // -------------------------------------------------------------------------
         List<MetaDataModel> stlist = metadataService.getAll();
@@ -248,14 +217,14 @@ public class MetaDataController {
     public String deleteMetaDataModel(@PathVariable("id") int id, HttpSession session,MetaDataModel metadatamodel) {
 
        String i = (String) session.getAttribute("Parameter");
-
+       String S_DBConnection_Name = (String)  session.getAttribute("S_DBConnection_Name");
 
 
 
        // ---- DELETE Call SPs -----------
         try {
             List v_ret_value;
-            v_ret_value = callspsRepository.get_pro_update_schema(i,"DELETE",metadataService.getMetaDataModel(id).getDbschema(),metadataService.getMetaDataModel(id).getDbtable(),metadataService.getMetaDataModel(id).getDbcolumn());
+            v_ret_value = callspsRepository.get_pro_update_schema(S_DBConnection_Name,i,"DELETE",metadataService.getMetaDataModel(id).getDbschema(),metadataService.getMetaDataModel(id).getDbtable(),metadataService.getMetaDataModel(id).getDbcolumn());
             System.out.println("-----------"+i);
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,27 +249,42 @@ public class MetaDataController {
             //,@RequestParam String trans
     ) throws IOException {
 
-        metadataService.insert(metadatamodel);
-        String i = (String) session.getAttribute("Parameter");
+        String i;
 
 
-        // ----------- SP Call for Insert Records -----
+        if(metadatamodel.getDbschema().isEmpty() || metadatamodel.getDbschema().equals("")
+                ||metadatamodel.getDbtable().isEmpty() || metadatamodel.getDbtable().equals("")
+                || metadatamodel.getDbtable().equals("-1")
+                ||metadatamodel.getDbcolumn().isEmpty() || metadatamodel.getDbcolumn().equals("")
+                || metadatamodel.getDbcolumn().equals("-1")
+                ||metadatamodel.getDbcheck().isEmpty() || metadatamodel.getDbcheck().equals("")
+        )
+        {
+             i = (String) session.getAttribute("Parameter");
+        }else{
+
+
+            metadataService.insert(metadatamodel);
+             i = (String) session.getAttribute("Parameter");
+            String S_DBConnection_Name = (String) session.getAttribute("S_DBConnection_Name");
+
+
+            // ----------- SP Call for Insert Records -----
             try {
 
-                System.out.println("-----Source------"+i);
+                System.out.println("-----Source------" + i);
 
 
                 List v_ret_value;
-                v_ret_value = callspsRepository.get_pro_update_schema(i,"INSERT", metadatamodel.getDbschema(),metadatamodel.getDbtable(),metadatamodel.getDbcolumn());
+                v_ret_value = callspsRepository.get_pro_update_schema(S_DBConnection_Name, i, "INSERT", metadatamodel.getDbschema(), metadatamodel.getDbtable(), metadatamodel.getDbcolumn());
             } catch (Exception e) {
-              e.printStackTrace();
+                e.printStackTrace();
             }
-        // -------End of SP Call  ----------
+            // -------End of SP Call  ----------
 
+        }
+        return "redirect:/metadata/getAll?trans=" + i;
 
-
-
-        return "redirect:/metadata/getAll?trans="+i;
     }
 
 
@@ -314,4 +298,6 @@ public class MetaDataController {
         metadataService.update(id, metadatamodel);
         return "redirect:/metadatamodels/getAll";
     }
+
+
 }

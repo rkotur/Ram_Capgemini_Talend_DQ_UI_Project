@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Existing Campaigns</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Apply blue gradient background to the body */
+        body {
+            background: linear-gradient(45deg, #4a00e0, #8e2de2);
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            padding-top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Add styling for the container and cards */
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h3 {
+            color: #4a00e0;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-content {
+            background-color: #f4f4f4;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title, .card-text {
+            color: #333333;
+        }
+
+        .btn-info, .btn-warning, .btn-danger {
+            margin-right: 5px;
+        }
+
+        .modal-header {
+            background-color: #8e2de2;
+            color: white;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(to left, #4776E6, #8e54e9);
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background: linear-gradient(to right, #4776E6, #8e54e9);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h3>Existing Campaigns</h3>
+            <div id="campaignList"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Campaign Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="editModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Campaign</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editCampaignForm">
+                    <div class="form-group">
+                        <label for="editName">Campaign Name</label>
+                        <input type="text" class="form-control" id="editName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOccurrence">Occurrence</label>
+                        <select class="form-control" id="editOccurrence" required>
+                            <option value="ONCE">Once</option>
+                            <option value="WEEKLY">Weekly</option>
+                            <option value="MONTHLY">Monthly</option>
+                            <option value="QUARTERLY">Quarterly</option>
+                            <option value="YEARLY">Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStartTime">Start Time</label>
+                        <input type="datetime-local" class="form-control" id="editStartTime" required>
+                    </div>
+                    <input type="hidden" id="editId">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/campaigns')
+        .then(response => response.json())
+        .then(data => {
+            const campaignList = document.getElementById('campaignList');
+            campaignList.innerHTML = '';
+            data.forEach(campaign => {
+                const campaignItem = document.createElement('div');
+                campaignItem.className = 'card mb-3';
+                campaignItem.innerHTML = `
+                    <div class="card-body">
+                        <h5 class="card-title">${campaign.name}</h5>
+                        <p class="card-text">
+                            Occurrence: ${campaign.occurrence}<br>
+                            Start Time: ${new Date(campaign.startTime).toLocaleString()}<br>
+                            End Time: ${new Date(campaign.endTime).toLocaleString()}
+                        </p>
+                        <button class="btn btn-info" onclick="viewCampaign(${campaign.id})">View</button>
+                        <button class="btn btn-warning" onclick="openEditModal(${campaign.id})">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteCampaign(${campaign.id})">Delete</button>
+                    </div>
+                `;
+                campaignList.appendChild(campaignItem);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    function viewCampaign(id) {
+        fetch(`/campaigns/${id}`)
+        .then(response => response.json())
+        .then(campaign => {
+            alert(`Campaign Details:\n\nName: ${campaign.name}\nOccurrence: ${campaign.occurrence}\nStart Time: ${new Date(campaign.startTime).toLocaleString()}\nEnd Time: ${new Date(campaign.endTime).toLocaleString()}`);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function openEditModal(id) {
+        fetch(`/campaigns/${id}`)
+        .then(response => response.json())
+        .then(campaign => {
+            document.getElementById('editId').value = campaign.id;
+            document.getElementById('editName').value = campaign.name;
+            document.getElementById('editOccurrence').value = campaign.occurrence;
+            document.getElementById('editStartTime').value = campaign.startTime.slice(0, 16);
+            $('#editModal').modal('show');
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    document.getElementById('editCampaignForm').onsubmit = function(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('editId').value;
+        const name = document.getElementById('editName').value;
+        const occurrence = document.getElementById('editOccurrence').value;
+        const startTime = new Date(document.getElementById('editStartTime').value);
+
+        let endTime;
+        switch (occurrence) {
+            case 'ONCE':
+                endTime = new Date(startTime);
+                break;
+            case 'WEEKLY':
+                endTime = new Date(startTime);
+                endTime.setDate(startTime.getDate() + 7);
+                break;
+            case 'MONTHLY':
+                endTime = new Date(startTime);
+                endTime.setMonth(startTime.getMonth() + 1);
+                break;
+            case 'QUARTERLY':
+                endTime = new Date(startTime);
+                endTime.setMonth(startTime.getMonth() + 3);
+                break;
+            case 'YEARLY':
+                endTime = new Date(startTime);
+                endTime.setFullYear(startTime.getFullYear() + 1);
+                break;
+            default:
+                endTime = new Date(startTime);
+        }
+
+        const updatedCampaign = {
+            name: name,
+            occurrence: occurrence,
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString()
+        };
+
+        fetch(`/campaigns/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedCampaign)
+        })
+        .then(response => response.json())
+        .then(data => {
+            $('#editModal').modal('hide');
+            alert('Campaign updated successfully!');
+            location.reload();
+        })
+        .catch(error => console.error('Error:', error));
+    };
+
+    function deleteCampaign(id) {
+        if (confirm('Are you sure you want to delete this campaign?')) {
+            fetch(`/campaigns/${id}`, {
+                method: 'DELETE'
+            })
+            .then(() => {
+                alert('Campaign deleted successfully!');
+                location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+
+</html>
