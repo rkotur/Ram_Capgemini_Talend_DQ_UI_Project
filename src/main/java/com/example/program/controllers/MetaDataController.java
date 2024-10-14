@@ -7,7 +7,10 @@ import java.util.List;
 
 import com.example.program.Services.DBConnectionRequest;
 import com.example.program.Services.DQ_RulesService;
+import com.example.program.Services.ETLScheduleService;
 import com.example.program.models.DQ_RulesModel;
+import com.example.program.models.ETLScheduleModel;
+import com.example.program.repository.ETLScheduleRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
@@ -39,12 +42,23 @@ public class MetaDataController {
     @Autowired(required=true)
     private DQ_RulesService dq_rulesservice;
 
+    @Autowired(required=true)
+    private ETLScheduleService etlschduleservice;
+
+
+
+
+
     private final DQ_RulesRepository dq_rulesrepository;
     private final SchemaRepository schemaRepository;
+    private final ETLScheduleRepository etlScheduleRepository;
 
-    public MetaDataController(DQ_RulesRepository dqRulesrepository, SchemaRepository schemaRepository) {
+
+
+    public MetaDataController(DQ_RulesRepository dqRulesrepository, SchemaRepository schemaRepository, ETLScheduleRepository etlScheduleRepository) {
         this.dq_rulesrepository = dqRulesrepository;
         this.schemaRepository = schemaRepository;
+        this.etlScheduleRepository = etlScheduleRepository;
     }
 
 /*
@@ -59,30 +73,12 @@ public class MetaDataController {
     @GetMapping("/getAll")
     public String getAll(Model model, @RequestParam String trans, @ModelAttribute DBConnectionRequest connectionRequest, HttpSession session) {
 
-
-//-----------------------------------------------------------------------
-
-
-
-        System.out.println("------------------- @GetMapping(\"/getAll\") --------------------------------------");
-        System.out.println(session.getAttribute("S_DB_Name"));
-        System.out.println(session.getAttribute("S_DB_HostName"));
-        System.out.println("---------------------------------------------------------");
-// ---------------------------------------------------------------------------
-
         model.addAttribute("parameter",(trans.equals("1"))?"Profiling":"Custom");
 
         session.setAttribute("Parameter",trans);
 
         MetaDataModel metadatamodel = new MetaDataModel();
-       // model.addAttribute("metadatamodel", metadatamodel.getDbsource().equals(trans.equals("1")?"Profiling":"Custom"));
-
         model.addAttribute("metadatamodel", metadatamodel);
-
-
-
-
-
 
         List<String> schemaNames =  new ArrayList<>();
         schemaRepository.getSchemas().forEach(e-> schemaNames.add(e.getName()));
@@ -102,9 +98,6 @@ public class MetaDataController {
         dq_rulesrepository.getRules(v_rule_type).forEach(e-> ruleMetaNames.add(e.getName()));
         model.addAttribute("ruleMetaNames", ruleMetaNames);
 
-
-
-// -------------------------------------------------------------------------
         List<MetaDataModel> stlist = metadataService.getAll();
         model.addAttribute("metadatamodels", stlist);
 
@@ -112,6 +105,12 @@ public class MetaDataController {
 
         List<DQ_RulesModel> stlist1 = dq_rulesservice.getAll();
         model.addAttribute("dq_rulesmodel", stlist1);
+
+
+        List<String> campaign1 =  new ArrayList<>();
+        etlschduleservice.findAll().forEach(e-> campaign1.add(e.getCampaignName()));
+        model.addAttribute("campaign", campaign1);
+
 
 
         return "Metadatamodels";
@@ -137,11 +136,33 @@ public class MetaDataController {
         schemaRepository.getTables("spoton").forEach(e-> tableNames.add(e.getName()));
         model.addAttribute("tableNames", tableNames);
 
+
+
+/*
+        List<String> columnsNames =  new ArrayList<>();
+        schemaRepository.getColumns("spoton","loading").forEach(e-> columnsNames.add(e.getName()));
+        model.addAttribute("columnnames", columnsNames);
+*/
         List<String> columnsNames =  new ArrayList<>();
         schemaRepository.getColumns("spoton","loading").forEach(e-> columnsNames.add(e.getName()));
         model.addAttribute("columnsNames", columnsNames);
 
+
+
+
+
+// etlScheduleRepository
 /*
+        List<String> campaignNames =  new ArrayList<>();
+        etlScheduleRepository.getCampaign().forEach(e-> campaignNames.add(e.getCampaignName()));
+        model.addAttribute("campaignNames", campaignNames);
+*/
+
+
+
+
+
+        /*
         List<String> ruleNames = new ArrayList<>();
         schemaRepository.getRules().forEach(e-> ruleNames.add(e.getName()));
         //schemaRepository.getSchemas().forEach(e-> ruleNames.add(e.getName()));
@@ -231,10 +252,6 @@ public class MetaDataController {
         }
        // -- End of Delete call SPs --
 
-
-
-
-
         metadataService.delete(id);
         return "redirect:/metadata/getAll?trans="+i;
     }
@@ -271,9 +288,6 @@ public class MetaDataController {
 
             // ----------- SP Call for Insert Records -----
             try {
-
-                System.out.println("-----Source------" + i);
-
 
                 List v_ret_value;
                 v_ret_value = callspsRepository.get_pro_update_schema(S_DBConnection_Name, i, "INSERT", metadatamodel.getDbschema(), metadatamodel.getDbtable(), metadatamodel.getDbcolumn());

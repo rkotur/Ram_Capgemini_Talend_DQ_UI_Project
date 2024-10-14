@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,13 +19,20 @@ public class ETLScheduleModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false , unique=true)
-    private String campaign_name;
+    @Column(name = "campaign_name", nullable=false , unique=true)
+    private String campaignName;
+
 
     @Column(nullable=false)
     private String schedule_name;
 
     @Column(nullable=false)
-    private Date select_date;
+    private LocalDateTime select_date;
+
+    @Transient // This will not be persisted in the database
+    private String formattedEventDate;
+
+    @Column(nullable=false)
+    private String is_used;
 
 }

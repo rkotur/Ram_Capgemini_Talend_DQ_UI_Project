@@ -6,7 +6,10 @@ import com.example.program.models.Schema;
 import com.example.program.repository.SchemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.wavefront.WavefrontProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +26,7 @@ import java.util.function.Function;
 
 @RestController
 @SpringBootApplication
-public class DemoApplication {
+public class DemoApplication extends SpringBootServletInitializer {
 	public static SchemaRepository schemaRepository;
 
 	@Autowired
@@ -34,16 +37,9 @@ public class DemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
-
-
-		//System.out.println("-------- Schemas ------------------------------------------------------------");
-		//schemaRepository.getSchemas().forEach(e->System.out.println(e.getName()));
-//		System.out.println("---------- Tables ------------------------------------------------------------------------");
-//		schemaRepository.getTables("spoton").forEach(e->System.out.println(e.getName()));
-//		System.out.println("---------- Columns ------------------------------------------------------------------------");
-//		schemaRepository.getColumns("spoton","loading").forEach(e->System.out.println(e.getName()));
-
-
-
+	}
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(WavefrontProperties.Application.class);
 	}
 }

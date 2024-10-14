@@ -29,6 +29,8 @@ public class MetaDataModel {
 
     private String dbsource;
 
+    private String campaign_name;
+
     public String getDbsource() {
         return dbsource;
     }
@@ -78,6 +80,17 @@ public class MetaDataModel {
     public void setDbcheck(String dbcheck) {
         this.dbcheck = dbcheck;
     }
+
+
+    public String getCampaign_name() {
+        return campaign_name;
+    }
+
+    public void setCampaign_name(String campaign_name) {
+        this.campaign_name = campaign_name;
+    }
+
+
 
     public String getUpdatedBy() {
         return updatedBy;

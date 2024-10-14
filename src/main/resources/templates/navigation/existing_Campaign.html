@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -239,5 +239,47 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
+<div class="container mt-5">
+    <h2>ETL Schedules</h2>
+    <a href="/navigation/etl-schedules/new" class="btn btn-primary mb-3">Add New Schedule</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Campaign Name</th>
+            <th>Schedule Name</th>
+            <th>Select Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="schedule : ${schedulesPage.content}">
+            <td th:text="${schedule.id}"></td>
+            <td th:text="${schedule.campaign_name}"></td>
+            <td th:text="${schedule.schedule_name}"></td>
+            <td th:text="${#dates.format(schedule.select_date, 'yyyy-MM-dd')}"></td>
+            <td>
+                <a th:href="@{/navigation/etl-schedules/edit/{id}(id=${schedule.id})}" class="btn btn-warning">Edit</a>
+                <a th:href="@{/navigation/etl-schedules/delete/{id}(id=${schedule.id})}" class="btn btn-danger" th:onclick="'return confirm(\'Are you sure?\');'">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" th:class="${schedulesPage.hasPrevious()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/navigation/etl-schedules(page=${schedulesPage.number - 1}, size=${schedulesPage.size})}">Previous</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.range(0, schedulesPage.totalPages - 1)}" th:class="${i == schedulesPage.number ? 'active' : ''}">
+                <a class="page-link" th:href="@{/navigation/etl-schedules(page=${i}, size=${schedulesPage.size})}" th:text="${i + 1}"></a>
+            </li>
+            <li class="page-item" th:class="${schedulesPage.hasNext()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/navigation/etl-schedules(page=${schedulesPage.number + 1}, size=${schedulesPage.size})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
 </html>

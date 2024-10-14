@@ -11,8 +11,9 @@
 	<groupId>com.program1</groupId>
 	<artifactId>program1</artifactId>
 	<version>0.0.1-SNAPSHO/T</version>
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<packaging>war</packaging>
+	<name>DIQ Project</name>
+	<description>DIQ Application</description>
 	<properties>
 		<java.version>20</java.version>
 	</properties>
@@ -149,6 +150,7 @@
 			<artifactId>spring-dynamic-jdbc</artifactId>
 			<version>3.0.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.github.joutvhu</groupId>
 			<artifactId>spring-dynamic-freemarker</artifactId>
@@ -177,6 +179,14 @@
 			<artifactId>guava</artifactId>
 			<version>31.0.1-jre</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+
 	</dependencies>
 
 
