@@ -29,17 +29,10 @@ public class DBconnectionService {
                         connectionRequest.getPort() + "/" + connectionRequest.getDbName();
 
 
-        /*
-        String url =
-                "jdbc:mysql://" +
-                        connectionRequest.getHostname() + ":" +
-                        connectionRequest.getPort() + "/" +
-                        connectionRequest.getDbName();
-        */
-        //System.out.println("Ram..... URL:.."+url);
+        String yam=connectionRequest.getUsername().substring(0,connectionRequest.getUsername().indexOf(","));
 
         return dbConnectionUrl.equals(url)
-                && dbConnectionUserName.equals(connectionRequest.getUsername()) &&
+                && dbConnectionUserName.equals(yam) &&
                 dbConnectionPassword.equals(connectionRequest.getPassword());
     }
 }
