@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            border: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, #8e2de2, #4a00e0);
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            min-width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        main.container {
+            background: white;
+            min-width: 320px;
+            min-height: 26vh;
+            padding: 2rem;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        main h2 {
+            font-weight: 600;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        main h4 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-left: ;
+        }
+
+        main h2::before {
+            content: '';
+            position: absolute;
+            height: 4px;
+            width: 25px;
+            bottom: 3px;
+            left: 0;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #8e2de2, #4a00e0);
+        }
+
+        main h4::before {
+            content: '';
+            position: absolute;
+            height: 4px;
+            width: 25px;
+            bottom: 3px;
+            left: 0;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #8e2de2, #4a00e0);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .button-field {
+            position: relative;
+        }
+
+        form .button-field:first-child {
+            margin-bottom: 1.5rem;
+        }
+
+        .button-field .underline::before {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            bottom: -5px;
+            left: 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .button-field .underline::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(45deg, #8e2de2, #4a00e0);
+            transform: scaleX(0);
+            transition: all .3s ease-in-out;
+            transform-origin: left;
+        }
+
+        .button-field button:focus ~ .underline::after {
+            transform: scaleX(1);
+        }
+
+        .button-field button {
+            outline: none;
+            font-size: 0.9rem;
+            color: rgba(0, 0, 0, 0.7);
+            width: 100%;
+        }
+
+        .button-field button::placeholder {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        form button[type="submit"] {
+            margin-top: 2rem;
+            padding: 0.4rem;
+            width: 100%;
+            background: linear-gradient(to left, #4776E6, #8e54e9);
+            cursor: pointer;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 300;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        form button[type="submit"]:hover {
+            letter-spacing: 0.5px;
+            background: linear-gradient(to right, #4776E6, #8e54e9);
+        }
+
+        .footer {
+            display: flex;
+            flex-direction: column;
+            margin-top: 1rem;
+        }
+
+        .footer span {
+            color: rgba(0, 0, 0, 0.7);
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .footer .social-field {
+            padding: 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .footer .social-field a i {
+            margin: 0 0.5rem;
+            width: 15px;
+        }
+
+        .footer .social-field a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .footer .social-field.twitter {
+            background: linear-gradient(to right, #56a7f2, #468aca);
+        }
+
+        .footer .social-field.facebook {
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+        }
+
+        .image-container {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-top: -27px;
+            margin-left: 2rem;
+        }
+
+        .img-1 {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .img-2 {
+            width: 100px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .custom-link {
+            text-decoration: none;
+            color: white;
+        }
+
+        /* Styles for form fields */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select {
+            padding: 0.5rem;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        input[type="date"] {
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+<main class="container">
+    <div class="container mt-4">
+
+        <div class="row">
+            <div class="col text-left">
+                <h3>Campaigns</h3>
+            </div>
+            <div class="col text-right">
+                <a th:href="@{/Main/navigation}" class="btn btn-primary">Home</a>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Campaign Name</th>
+                <th>Schedule Name</th>
+                <th>Select Date</th>
+                <th>Is Used</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="schedule : ${etlSchedules}">
+                <td th:text="${schedule.id}"></td>
+                <td th:text="${schedule.campaignName}"></td>
+                <td th:text="${schedule.schedule_name}"></td>
+                <td th:text="${schedule.select_date}"></td>
+                <td th:text="${schedule.is_used}"></td>
+                <td>
+                    <a th:href="@{/navigation/edit/{id}(id=${schedule.id})}" class="btn btn-warning">Edit</a>
+                    <a th:href="@{/navigation/delete/{id}(id=${schedule.id})}" class="btn btn-danger"
+                       th:onclick="'return confirm(\'Are you sure?\');'">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/campaigns(page=${currentPage - 1})}">Previous</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/campaigns(page=${i})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/campaigns(page=${currentPage + 1})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+        <a th:href="@{/navigation/new}" class="btn btn-primary">Create New Campaign</a>
+    </div>
+
+
+</main>
+</body>
+
+</html>
