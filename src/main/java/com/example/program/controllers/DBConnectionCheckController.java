@@ -100,6 +100,10 @@ public class DBConnectionCheckController {
                 return new ModelAndView("redirect:/Main/navigation");
             } else {
                 System.out.println("It Fail to connected...");
+                System.out.println("DB name"+connectionRequest.getDbName());
+                System.out.println("portname"+connectionRequest.getPort());
+                System.out.println("Host"+connectionRequest.getHostname());
+                System.out.println("username ->"+connectionRequest.getUsername());
                 model.addAttribute("error", "Connection Is Wrong, check the fields");
                 //return new ModelAndView("redirect:/databaseSelection");
                 return new ModelAndView("redirect:/Main/databaseSelection?loginError=true");

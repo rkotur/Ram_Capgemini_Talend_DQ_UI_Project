@@ -1,21 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<html lang="pt-br">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="https://kit.fontawesome.com/1ab94d0eba.js" crossorigin="anonymous"></script>
-	<title>Login Form</title>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link href="/webjars/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-	<script
-			src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"
-			crossorigin="anonymous"
-	></script>
-	<style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 
         * {
             margin: 0;
@@ -50,10 +43,10 @@
             position: relative;
         }
 
-        main h4{
+        main h4 {
             font-weight: 600;
             margin-bottom: 1rem;
-            margin-left:;
+            margin-left: ;
         }
 
         main h2::before {
@@ -66,6 +59,7 @@
             border-radius: 8px;
             background: linear-gradient(45deg, #8e2de2, #4a00e0);
         }
+
         main h4::before {
             content: '';
             position: absolute;
@@ -187,42 +181,115 @@
 
         .image-container {
             display: flex;
-            align-items: center; /* Aligns items vertically in the center */
-            gap: 0; /* No gap between the images */
-            margin-top: -27px; /* No margin above the image container */
+            align-items: center;
+            gap: 0;
+            margin-top: -27px;
             margin-left: 2rem;
         }
 
         .img-1 {
-            width: 100px;   /* Fixed width for img-1 */
-            height: 100px;  /* Fixed height for img-1 */
-            object-fit: contain; /* Ensures img-1 fits within the dimensions */
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
         }
 
         .img-2 {
-            width: 100px;   /* Fixed width for img-2 */
-            height: 20px;   /* Reduced height for img-2 */
-            object-fit: contain; /* Ensures img-2 fits within the dimensions */
+            width: 100px;
+            height: 20px;
+            object-fit: contain;
         }
-        .custom-link {
-    text-decoration: none; /* Remove underline */
-    color: white;         /* Change text color to white */
-}
 
-  </style>
+        .custom-link {
+            text-decoration: none;
+            color: white;
+        }
+
+        /* Styles for form fields */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select {
+            padding: 0.5rem;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        input[type="date"] {
+            cursor: pointer;
+        }
+
+    </style>
 </head>
+
 <body>
 <main class="container">
-	<form action="">
-		<button type="submit"><a class="custom-link" th:href="@{databaseSelection}"> DB Login Check</a></button>
-		<br>
-		<h4 style="margin-top: 2rem; margin-bottom: 0.5rem; margin-left: 5rem">Powered By</h4>
-		<div class="image-container">
-			<img class="img-1" src="https://www.capgemini.com/wp-content/themes/capgemini2020/assets/images/logo.svg" alt="Capgemini Logo">
-			<img class="img-2" src="https://res.cloudinary.com/talend/image/upload/q_auto/v1700581361/qlik/testing/glossary/Qlik_Logo_Trademark_2_Color_Positive_RGB_2_itwa1t_cibcft.svg" alt="Qlik Logo">
-		</div>
-	</form>
+    <div class="container mt-4">
+
+        <div class="row">
+            <div class="col text-left">
+                <h3>Campaigns</h3>
+            </div>
+            <div class="col text-right">
+                <a th:href="@{/Main/navigation}" class="btn btn-primary">Home</a>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Campaign Name</th>
+                <th>Schedule Name</th>
+                <th>Select Date</th>
+                <th>Is Used</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="schedule : ${etlSchedules}">
+                <td th:text="${schedule.id}"></td>
+                <td th:text="${schedule.campaignName}"></td>
+                <td th:text="${schedule.schedule_name}"></td>
+                <td th:text="${schedule.select_date}"></td>
+                <td th:text="${schedule.is_used}"></td>
+                <td>
+                    <a th:href="@{/navigation/edit/{id}(id=${schedule.id})}" class="btn btn-warning">Edit</a>
+                    <a th:href="@{/navigation/delete/{id}(id=${schedule.id})}" class="btn btn-danger"
+                       th:onclick="'return confirm(\'Are you sure?\');'">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/campaigns(page=${currentPage - 1})}">Previous</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/campaigns(page=${i})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/campaigns(page=${currentPage + 1})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+        <a th:href="@{/navigation/new}" class="btn btn-primary">Create New Campaign</a>
+    </div>
+
 
 </main>
 </body>
+
 </html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="container">
+    <h2 th:text="${schedule != null} ? 'Edit ETL Schedule' : 'Add ETL Schedule'"></h2>
+
+
+    <!-- Form for Adding/Editing Schedule -->
+
+    <form th:action="@{${schedule != null && schedule.id != null} ? '/navigation/update/' + ${schedule.id} : '/navigation/save'}" method="post" th:if="${schedule != null || schedule == null}">
+    <!--
+    <form th:action="@{'/navigation/save'}" method="post">
+   -->
+
+    <div class="form-group">
+            <label for="campaignName">Campaign Name</label>
+            <input type="text" id="campaignName" name="campaignName" class="form-control" th:value="${schedule.campaignName}" required>
+        </div>
+        <div class="form-group">
+            <label for="schedule_name">Schedule Name</label>
+            <select id="schedule_name" name="schedule_name" class="form-control" required>
+                <option value="" disabled selected>Select a schedule</option>
+                <option value="Once" th:selected="${schedule.schedule_name == 'Once'}" selected>Once</option>
+                <option value="Twice" th:selected="${schedule.schedule_name == 'Twice'}">Twice</option>
+                <option value="Three" th:selected="${schedule.schedule_name == 'Three'}">Three</option>
+                <option value="Four" th:selected="${schedule.schedule_name == 'Four'}">Four</option>
+                <!-- Add more options as necessary -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="select_date">Select Date</label>
+            <input type="datetime-local" id="select_date" name="select_date" class="form-control" th:value="${schedule.select_date}" required>
+        </div>
+        <div class="form-group">
+            <label for="select_date">Is Used ?</label>
+            <select id="is_used" name="is_used" class="form-control" required>
+                <option value="Yes" th:selected="${schedule.is_used == 'Yes'}">Yes</option>
+                <option value="No" th:selected="${schedule.is_used == 'No'}">No</option>
+            </select>
+
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="/navigation/campaign" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>
