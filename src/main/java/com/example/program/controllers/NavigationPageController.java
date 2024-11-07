@@ -30,7 +30,6 @@ public class NavigationPageController {
 
     @GetMapping("/campaign")
     public String showAllCampaigns(@RequestParam(defaultValue = "0") int page, Model model) {
-        System.out.println("-- Step-3 ------  /campaigns --- showAllCampaigns ----------");
 
         // Assuming you have a service method that supports pagination
         Page<ETLScheduleModel> schedulePage = etlScheduleService.getAllSchedules(PageRequest.of(page, 10)); // 10 records per pag
@@ -39,9 +38,10 @@ public class NavigationPageController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", schedulePage.getTotalPages());
 
+        //return "/navigation/show_campaign"; // Return the view for displaying all campaigns
 
+        return "navigation/show_campaign";
 
-        return "/navigation/show_campaign"; // Return the view for displaying all campaigns
     }
 
     @PostMapping("/save")
@@ -73,7 +73,7 @@ public class NavigationPageController {
     @GetMapping("/new")
     public String createETLScheduleForm(Model model) {
         model.addAttribute("schedule", new ETLScheduleModel());
-        return "/navigation/create_new_campaign";
+        return "navigation/create_new_campaign";
     }
 
     @PostMapping
@@ -86,7 +86,7 @@ public class NavigationPageController {
     public String editETLScheduleForm(@PathVariable Long id, Model model) {
         ETLScheduleModel schedule = etlScheduleService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid schedule Id:" + id));
         model.addAttribute("schedule", schedule);
-        return "/navigation/create_new_campaign";
+        return "navigation/create_new_campaign";
 
     }
 

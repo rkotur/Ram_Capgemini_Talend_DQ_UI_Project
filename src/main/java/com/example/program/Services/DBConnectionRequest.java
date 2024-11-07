@@ -21,14 +21,13 @@ public class DBConnectionRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String name; // A Unique Name
+    private String database;
+    private String dbsource;
     private String hostname;
     private int port;
+    private String dbName;
     private String username;
     private String password;
-    private String database;
-    private String dbName;
-
-    private String dbsource;
 
 }

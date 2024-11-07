@@ -8,9 +8,9 @@ import java.util.List;
 import com.example.program.Services.DBConnectionRequest;
 import com.example.program.Services.DQ_RulesService;
 import com.example.program.Services.ETLScheduleService;
+import com.example.program.models.DBConnectionCheckModel;
 import com.example.program.models.DQ_RulesModel;
-import com.example.program.models.ETLScheduleModel;
-import com.example.program.repository.ETLScheduleRepository;
+import com.example.program.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
@@ -24,10 +24,6 @@ import com.example.program.models.MetaDataModel;
 import com.example.program.Services.MetaDataService;
 
 import jakarta.servlet.http.HttpServletResponse;
-import com.example.program.repository.SchemaRepository;
-import com.example.program.repository.DQ_RulesRepository;
-
-import com.example.program.repository.CallSPsRepository;
 
 // DatabaseConnectionCheck
 
@@ -46,19 +42,18 @@ public class MetaDataController {
     private ETLScheduleService etlschduleservice;
 
 
-
-
-
     private final DQ_RulesRepository dq_rulesrepository;
     private final SchemaRepository schemaRepository;
     private final ETLScheduleRepository etlScheduleRepository;
 
+    private final DBNameDTORepository dbNameDTORepository;
 
 
-    public MetaDataController(DQ_RulesRepository dqRulesrepository, SchemaRepository schemaRepository, ETLScheduleRepository etlScheduleRepository) {
+    public MetaDataController(DQ_RulesRepository dqRulesrepository, SchemaRepository schemaRepository, ETLScheduleRepository etlScheduleRepository, DBNameDTORepository dbNameDTORepository) {
         this.dq_rulesrepository = dqRulesrepository;
         this.schemaRepository = schemaRepository;
         this.etlScheduleRepository = etlScheduleRepository;
+        this.dbNameDTORepository = dbNameDTORepository;
     }
 
 /*
@@ -71,6 +66,7 @@ public class MetaDataController {
 
     //@RequestMapping(value="/getAll", method = RequestMethod.POST)
     @GetMapping("/getAll")
+    //public String getAll(Model model, @RequestParam String trans, @ModelAttribute DBConnectionRequest connectionRequest, HttpSession session) {
     public String getAll(Model model, @RequestParam String trans, @ModelAttribute DBConnectionRequest connectionRequest, HttpSession session) {
 
         model.addAttribute("parameter",(trans.equals("1"))?"Profiling":"Custom");
@@ -111,15 +107,14 @@ public class MetaDataController {
         etlschduleservice.findAll().forEach(e-> campaign1.add(e.getCampaignName()));
         model.addAttribute("campaign", campaign1);
 
-
-
-        return "Metadatamodels";
+        return "metadata/metadatamodels";
     }
 
 
 
     @GetMapping("/addNew")
     public String newMetaDataModel(@ModelAttribute DBConnectionRequest connectionRequest, Model model) {
+
         MetaDataModel metadatamodel = new MetaDataModel();
         model.addAttribute("metadatamodel", metadatamodel);
 
