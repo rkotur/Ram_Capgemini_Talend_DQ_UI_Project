@@ -26,6 +26,7 @@ import com.example.program.repository.SchemaRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +58,8 @@ public class DBConnectionCheckController {
     private DBconnectionService dbconnectionService;
 
     private DBNameDTORepository dbNameDTORepository;
+
+    @Autowired
     private DBConnectionCheckRepository dbConnectionCheckRepository;
 
     @Autowired
@@ -106,13 +109,11 @@ public class DBConnectionCheckController {
         //--------------------------------------------------------------------------------------
 
 
-        List<String> dbnames =  new ArrayList<>();
-        //dbConnectionCheckRepository.getDB_Name().forEach(e-> dbnames.add(e.getId().toString()));
+        List<DBNameDTO> dbnames =  new ArrayList<>();
 
-        //dbConnectionCheckRepository.getDB_Name().forEach(e-> dbnames.add(e.getDb_connection_name()));
-        //dbnames.add("Ram");
+        dbnames.add(new DBNameDTO(-1,"--Select Value--"));
 
-        serv.getAllDbNames().forEach(e-> dbnames.add(e.getDb_name()));
+        serv.getAllDbNames().forEach(e-> dbnames.add(new DBNameDTO(e.getId(),e.getDb_name())));
         model.addAttribute("dbnames", dbnames);
 
         //--------------------------------------------------------------------------------------
@@ -143,41 +144,32 @@ public class DBConnectionCheckController {
             if (isConnected) {
                 System.out.println("It connected...");
 
-                session.setAttribute("S_DBConnection_Name","postgres");
-                session.setAttribute("S_Name",connectionRequest.getName());
-                session.setAttribute("S_DB_Name",connectionRequest.getDatabase());
-                session.setAttribute("S_DB_Port",connectionRequest.getPort());
-                session.setAttribute("S_DB_HostName",connectionRequest.getHostname());
-                session.setAttribute("S_DB_User",connectionRequest.getUsername());
+                session.setAttribute("S_Name", connectionRequest.getName());
+                session.setAttribute("S_DBConnection_Name", connectionRequest.getDbsource());
+                session.setAttribute("S_DB_Name", connectionRequest.getDbName());
+                session.setAttribute("S_DB_Port", connectionRequest.getPort());
+                session.setAttribute("S_DB_HostName", connectionRequest.getHostname());
+                session.setAttribute("S_DB_User", connectionRequest.getUsername());
 
+                DBConnectionCheckModel dc = new DBConnectionCheckModel();
+                /*
+                System.out.println("Name:"+connectionRequest.getName()+" - ID: "+connectionRequest.getId().toString());
+                if (connectionRequest.getId() != -1 )
+                {
+                }
+                */
 
-                DBConnectionCheckModel dc =  new DBConnectionCheckModel();
-
-                dc.setDb_connection_name("postgres");
-                dc.setDb_name(connectionRequest.getName());
-                dc.setDb_database(connectionRequest.getDatabase());
-                dc.setDb_hostname(connectionRequest.getHostname());
-                dc.setDb_port(connectionRequest.getPort());
-                dc.setDb_username(connectionRequest.getUsername());
+                dc.setId(connectionRequest.getId());
+                dc.setDb_name(connectionRequest.getName()); // Ram DB Connection
+                dc.setDb_connection_name(connectionRequest.getDbsource()); //  Postgres / MySQL
+                dc.setDb_database(connectionRequest.getDbName()); // Postgres
+                dc.setDb_hostname(connectionRequest.getHostname()); // localhost
+                dc.setDb_port(connectionRequest.getPort()); // 5432
+                dc.setDb_username(connectionRequest.getUsername()); // postgres
                 dc.setDb_password(connectionRequest.getPassword());
 
                 DBConnectionCheckModel dc1 = connection_check_service.save(dc);
 
-                //dBconnectionService
-
-/*
-                DBConnectionCheckModel m = new DBConnectionCheckModel();
-                DBConnectionCheckService s = new DBConnectionCheckService();
-
-
-                m.setDbsource(connectionRequest.getDatabase());
-                m.setHostname(connectionRequest.getHostname());
-                m.setPort(connectionRequest.getPort());
-                m.setUsername(connectionRequest.getUsername());
-                m.setPassword(connectionRequest.getPassword());
-                m.setConnection_name(String.join(connectionRequest.getDatabase(),"-",connectionRequest.getHostname()));
-                s.save(m);
-                */
                 return new ModelAndView("redirect:/Main/navigation");
             } else {
                 System.out.println("It Fail to connected...");
@@ -195,10 +187,53 @@ public class DBConnectionCheckController {
             System.out.println("It Error to connected...");
             log.error(e.getMessage());
             model.addAttribute("error", e.getMessage());
-
             return new ModelAndView("redirect:/Main/databaseSelection");
         }
 
     }
+
+    @GetMapping("/getDBData")
+    @ResponseBody
+    public DBConnectionCheckModel getDBData(@RequestParam Long id) {
+        System.out.println("Ram Calling - getDBData............... "+id.toString());
+        return dbConnectionCheckRepository.findByName(id);
+        //return dbConnectionCheckRepository.findBydb_name(DBName);
+    }
+
+
+
+
+
+
+
+
+    //-----------------------------------------------------------------------------------------//
+
+    //@GetMapping("/databaseSelection/delete/{id}")
+    //@ResponseBody
+    @PostMapping("/databaseSelection/delete/{id}")
+    public ResponseEntity<?> deleteDatabaseSelection (@PathVariable Long id,DBConnectionRequest connectionRequest,
+                                                      Model model, HttpSession session) {
+        dbConnectionCheckRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+/*
+    //@PostMapping("/databaseSelection/delete/{id}")
+    @GetMapping("/databaseSelection/delete/{id}")
+    @ResponseBody
+    public ModelAndView deletevalue(@RequestParam Long id) {
+
+        System.out.println("Ram Calling - Delete............... ");
+
+        //dbConnectionCheckRepository.delete(id);
+       // return dbConnectionCheckRepository.findByName(DBName);
+        //return new ModelAndView("redirect:/Main/databaseSelection");
+        return new ModelAndView("redirect:/Main/databaseSelection");
+    }
+
+*/
+
+
 
 }

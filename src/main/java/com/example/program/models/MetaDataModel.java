@@ -87,6 +87,7 @@ public class MetaDataModel {
     }
 
     public void setCampaign_name(String campaign_name) {
+
         this.campaign_name = campaign_name;
     }
 

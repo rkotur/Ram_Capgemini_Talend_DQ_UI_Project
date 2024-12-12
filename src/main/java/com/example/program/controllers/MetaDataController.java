@@ -8,7 +8,8 @@ import java.util.List;
 import com.example.program.Services.DBConnectionRequest;
 import com.example.program.Services.DQ_RulesService;
 import com.example.program.Services.ETLScheduleService;
-import com.example.program.models.DBConnectionCheckModel;
+import com.example.program.dto.MetaData_AddDTO;
+import com.example.program.dto.MetaData_SearchDTO;
 import com.example.program.models.DQ_RulesModel;
 import com.example.program.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -67,35 +68,61 @@ public class MetaDataController {
     //@RequestMapping(value="/getAll", method = RequestMethod.POST)
     @GetMapping("/getAll")
     //public String getAll(Model model, @RequestParam String trans, @ModelAttribute DBConnectionRequest connectionRequest, HttpSession session) {
-    public String getAll(Model model, @RequestParam String trans, @ModelAttribute DBConnectionRequest connectionRequest, HttpSession session) {
+    public String getAll(Model model,
+                         @ModelAttribute MetaData_SearchDTO metadata_searchDTO,
+                         @ModelAttribute MetaData_AddDTO metadata_addDTO,
+                         @RequestParam String trans,
+                         @RequestParam String campaign_name,
+                         @ModelAttribute DBConnectionRequest connectionRequest,
+                         HttpSession session) {
 
-        model.addAttribute("parameter",(trans.equals("1"))?"Profiling":"Custom");
+        model.addAttribute("metadata_searchDTO", metadata_searchDTO);
+        model.addAttribute("metadata_addDTO", metadata_addDTO);
 
-        session.setAttribute("Parameter",trans);
+        model.addAttribute("parameter", (trans.equals("1")) ? "Profiling" : "Custom");
+        //model.addAttribute("campaign",campaign_name);
+
+        session.setAttribute("Parameter", trans);
+        //session.setAttribute("campaign",campaign_name);
+
 
         MetaDataModel metadatamodel = new MetaDataModel();
         model.addAttribute("metadatamodel", metadatamodel);
+        //model.addAttribute("metadatamodelDTO", new MetaDataDTO());
 
-        List<String> schemaNames =  new ArrayList<>();
-        schemaRepository.getSchemas().forEach(e-> schemaNames.add(e.getName()));
+
+
+        List<String> schemaNames = new ArrayList<>();
+        schemaRepository.getSchemas().forEach(e -> schemaNames.add(e.getName()));
         model.addAttribute("schemaNames", schemaNames);
 
-        List<String> tableNames =  new ArrayList<>();
-        schemaRepository.getTables("spoton").forEach(e-> tableNames.add(e.getName()));
+        List<String> tableNames = new ArrayList<>();
+        schemaRepository.getTables("spoton").forEach(e -> tableNames.add(e.getName()));
         model.addAttribute("tableNames", tableNames);
 
-        List<String> columnsNames =  new ArrayList<>();
-        schemaRepository.getColumns("spoton","loading").forEach(e-> columnsNames.add(e.getName()));
+        List<String> columnsNames = new ArrayList<>();
+        schemaRepository.getColumns("spoton", "loading").forEach(e -> columnsNames.add(e.getName()));
         model.addAttribute("columnsNames", columnsNames);
 
 
-        List<String> ruleMetaNames =  new ArrayList<>();
-        String v_rule_type = trans.equals("1")?"DQ Profiling":"DQ Custom";
-        dq_rulesrepository.getRules(v_rule_type).forEach(e-> ruleMetaNames.add(e.getName()));
+        List<String> ruleMetaNames = new ArrayList<>();
+        String v_rule_type = trans.equals("1") ? "DQ Profiling" : "DQ Custom";
+        dq_rulesrepository.getRules(v_rule_type).forEach(e -> ruleMetaNames.add(e.getName()));
         model.addAttribute("ruleMetaNames", ruleMetaNames);
-
-        List<MetaDataModel> stlist = metadataService.getAll();
+/*
+       List<MetaDataModel> stlist = metadataService.getAll();
+//        if (search_campaign_name.equals("All")) {
+//            stlist = (List<MetaDataModel>) metadataService.getAll().stream().filter(metaDataModel -> metaDataModel.getCampaign_name().equalsIgnoreCase(search_campaign_name));
+//        }
         model.addAttribute("metadatamodels", stlist);
+*/
+
+        List<MetaDataModel> stlist = metadataService.findByCampaignName(campaign_name);
+        model.addAttribute("metadatamodels", stlist);
+
+
+
+
 
         // dq_rulesservice
 
@@ -103,8 +130,8 @@ public class MetaDataController {
         model.addAttribute("dq_rulesmodel", stlist1);
 
 
-        List<String> campaign1 =  new ArrayList<>();
-        etlschduleservice.findAll().forEach(e-> campaign1.add(e.getCampaignName()));
+        List<String> campaign1 = new ArrayList<>();
+        etlschduleservice.findAll().forEach(e -> campaign1.add(e.getCampaignName()));
         model.addAttribute("campaign", campaign1);
 
         return "metadata/metadatamodels";
@@ -248,7 +275,7 @@ public class MetaDataController {
        // -- End of Delete call SPs --
 
         metadataService.delete(id);
-        return "redirect:/metadata/getAll?trans="+i;
+        return "redirect:/metadata/getAll?trans="+i+"&campaign_name=All";
     }
 
     @Autowired
@@ -257,7 +284,8 @@ public class MetaDataController {
 
     @PostMapping("/saveNew")
     public String insertMetaDataModel(
-            @ModelAttribute(value="metadatamodel") MetaDataModel metadatamodel,  HttpSession session
+            @ModelAttribute(value="metadatamodel") MetaDataModel metadatamodel,
+            HttpSession session
             //,@RequestParam String trans
     ) throws IOException {
 
@@ -285,6 +313,17 @@ public class MetaDataController {
             try {
 
                 List v_ret_value;
+
+                System.out.println("----------------- Before call SP: --get_pro_update_schema-----------------");
+                System.out.println("S_DBConnection_Name : "+S_DBConnection_Name);
+                System.out.println("i : "+i.toString());
+                System.out.println("Dbschema : "+metadatamodel.getDbschema());
+                System.out.println("getDbtable : "+metadatamodel.getDbtable());
+                System.out.println("getDbcolumn : "+metadatamodel.getDbcolumn());
+
+                String v_rule_type = i.equals("1") ? "DQ Profiling" : "DQ Custom";
+
+                //v_ret_value = callspsRepository.get_pro_update_schema(S_DBConnection_Name, i, "INSERT", metadatamodel.getDbschema(), metadatamodel.getDbtable(), metadatamodel.getDbcolumn());
                 v_ret_value = callspsRepository.get_pro_update_schema(S_DBConnection_Name, i, "INSERT", metadatamodel.getDbschema(), metadatamodel.getDbtable(), metadatamodel.getDbcolumn());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -292,11 +331,36 @@ public class MetaDataController {
             // -------End of SP Call  ----------
 
         }
-        return "redirect:/metadata/getAll?trans=" + i;
+        return "redirect:/metadata/getAll?trans=" + i+"&campaign_name="+metadatamodel.getCampaign_name();
 
     }
 
 
+
+//-----------------------------------------------------------------------------------------
+
+    @PostMapping("/search")
+    public String searchvalue(
+            @ModelAttribute(value="metadatamodel") MetaDataModel metadatamodel,
+            @RequestParam(value="campaign_name", defaultValue="") String searchCampaignName,
+            HttpSession session,
+            Model model
+
+            //,@RequestParam String trans
+    ) throws IOException {
+
+        String i;
+
+        i = (String) session.getAttribute("Parameter");
+        System.out.println("------------------searchCampaignName--------------------------------"+searchCampaignName);
+
+        model.addAttribute("metadatamodel", new MetaDataModel());
+        model.addAttribute("campaign", searchCampaignName);
+
+        return "redirect:/metadata/getAll?trans=" + i+"&campaign_name="+searchCampaignName;
+    }
+
+//-------------------------------------------------------------------------------------------------------------
 
     @PostMapping("/update/{id}")
     public String updateMetaDataModel(

@@ -42,7 +42,9 @@
             <label for="dbschema">Schema:</label>
           </td><td>
           <select id="dbschema" name="dbschema" th:field="*{dbschema}" required>
-            <option th:each="schema_name : ${schemaNames}" th:value="${schema_name}" th:text="${schema_name}">
+            <option th:each="schema_name : ${schemaNames}"
+                    th:value="${schema_name}"
+                    th:text="${schema_name}">
             </option>
 
           </select>
@@ -53,7 +55,9 @@
         </td>
         <td>
           <select id="dbtable" name="dbtable" th:field="*{dbtable}" required>
-            <option th:each="table_name : ${tableNames}" th:value="${table_name}" th:text="${table_name}"></option>
+            <option th:each="table_name : ${tableNames}"
+                    th:value="${table_name}"
+                    th:text="${table_name}"></option>
           </select>
           <br>
         </td>
@@ -65,7 +69,9 @@
       </td>
       <td>
         <select id="dbcolumn" name="dbcolumn" th:field="*{dbcolumn}" required>
-          <option th:each="columns_Names : ${columnsNames}" th:value="${columns_Names}" th:text="${columns_Names}"></option>
+          <option th:each="columns_Names : ${columnsNames}"
+                  th:value="${columns_Names}"
+                  th:text="${columns_Names}"></option>
         </select>
       </td>
     </tr>
@@ -77,27 +83,25 @@
     <td>
 
       <select id="campaign_name" name="campaign_name" th:field="*{campaign_name}" required>
-        <option th:each="campaign_name : ${campaign}" th:value="${campaign_name}" th:text="${campaign_name}"></option>
+        <option th:each="campaign_name : ${campaign}"
+                th:value="${campaign_name}"
+                th:text="${campaign_name}"></option>
       </select>
-
     </td>
     </tr>
 
 
   </table>
   <td>
-    <!--			<select multiple class="form-select" id="dbcheck" name="dbcheck" th:field="*{dbcheck}" >-->
-    <!--				<option th:each="rulesnames  : ${rulesNames}" th:value="${rulesnames}" th:text="${rulesnames}">-->
-    <!--				</option>-->
-    <!--			</select>-->
-
     <input type="hidden" id="dbsource" name="dbsource" th:value="${parameter}">
 
     <table>
       <tr>
         <td> <label for="dbcheck">Check:</label> </td>
         <td><select multiple class="form-select" id="dbcheck" name="dbcheck" th:field="*{dbcheck}" >
-          <option th:each="rulemetanames  : ${ruleMetaNames}" th:value="${rulemetanames}" th:text="${rulemetanames}">
+          <option th:each="rulemetanames  : ${ruleMetaNames}"
+                  th:value="${rulemetanames}"
+                  th:text="${rulemetanames}">
           </option>
         </select> </td>
       </tr>
@@ -109,6 +113,30 @@
   </tr>
   </table>
 </form>
+
+
+<!--------------------------------------------------------------------------------------------------------->
+<form action="#" th:object="${metadata_searchDTO}" method="post" th:action="@{search}" enctype="multipart/form-data">
+  <table class="table table-bordered table-striped" style="width: 100%">
+    <tr>
+      <td>
+        <label>Campaign:</label>
+      </td>
+      <td>
+      <select id="search_campaign_name" name="search_campaign_name" th:field="*{campaign_name}">
+        <option th:each="campaign_name : ${campaign}"
+                th:value="${campaign_name}"
+                th:text="${campaign_name}"
+                th:selected="${campaign_name} == *{campaign_name}"></option>
+      </select>
+        <input class="btn btn-outline-dark" type="submit"  value="Search" Style="color:green; text-decoration: underline"/>
+    </td>
+    </tr>
+  </table>
+</form>
+<!-------------------------------------------------------------------------------------------------------->
+
+
 <table class="table table-bordered table-striped" th:with="inx=0" >
   <thead>
   <tr>

@@ -41,8 +41,4 @@ public class ETLScheduleService {
         return etlScheduleRepository.findByCampaignName(campaign_name);
     }
 
-
-
-
-
 }

@@ -39,6 +39,7 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
+                <th>Expire Date</th>
             </tr>
         </thead>
         <tbody>
@@ -46,6 +47,7 @@
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.lastName}"></td>
                 <td th:text="${user.email}"></td>
+                <td th:date="${user.expire_date}"></td>
             </tr>
         </tbody>
     </table>

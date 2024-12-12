@@ -1,6 +1,5 @@
 package com.example.program.models;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "DQ_DB_Connction_Check_Det")
+@Table(name = "DQ_DB_Connction_Check_Det", schema = "dqs")
 public class DBConnectionCheckModel {
 
     @Id
@@ -25,4 +24,7 @@ public class DBConnectionCheckModel {
     private String db_database;
     private String db_username;
     private String db_password;
+
+
+
 }

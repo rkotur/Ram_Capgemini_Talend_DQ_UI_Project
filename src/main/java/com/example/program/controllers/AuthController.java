@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -30,6 +32,7 @@ public class AuthController {
 
     @GetMapping("login")
     public String loginForm() {
+
         return "login";
     }
 
@@ -41,6 +44,7 @@ public class AuthController {
         return "register";
     }
 
+    //@RequestBody @Valid
     // handler method to handle register user form submit request
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto user,
@@ -50,11 +54,26 @@ public class AuthController {
         if (existing != null) {
             result.rejectValue("email", null, "There is already an account registered with that email");
         }
+
+        /*
+        if (user.getExpiredate() != null) {
+            result.rejectValue("expiredate", null, "Expire Date should not be null!");
+        }
+        */
+        user.setExpiredate(user.getExpiredate());
+
+       // LocalDate ld = user.getExpiredate();
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        //user.setExpiredate(LocalDate.parse(ld, formatter));
+
         if (result.hasErrors()) {
             model.addAttribute("user", user);
             return "register";
         }
+
+
         userService.saveUser(user);
+
         return "redirect:/register?success";
     }
 

@@ -9,6 +9,30 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
+
+<script>
+    document.getElementById('expire_date').addEventListener('change', function(event) {
+        let dateInput = event.target.value;
+        let date = new Date(dateInput);
+
+        // Convert to EST (UTC-5)
+        let estDate = new Date(date.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+
+        console.log('Original Date:', date);
+        console.log('EST Date:', estDate);
+
+        // Format the EST date back to YYYY-MM-DD
+        let year = estDate.getFullYear();
+        let month = ('0' + (estDate.getMonth() + 1)).slice(-2);
+        let day = ('0' + estDate.getDate()).slice(-2);
+
+        // Update the input field with the EST date
+        event.target.value = `${year}-${month}-${day}`;
+    });
+</script>
+
+
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="header">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}">Registration and Login System</a>
@@ -85,6 +109,51 @@
                         <p th:errors="*{password}" class="text-danger"
                            th:if="${#fields.hasErrors('password')}">
                         </p>
+                    </div>
+
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">expire date</label>
+                        <input class="form-control"
+                               id="expiredate"
+                               name="expiredate"
+                               placeholder="Enter Expire Date"
+                               th:field="*{expiredate}"
+                               type="date"
+                               />
+                               <!-- pattern="\d{4}-\d{2}-\d{2}" -->
+
+                        <p th:errors="*{expiredate}" class="text-danger"
+                           th:if="${#fields.hasErrors('expiredate')}">
+                        </p>
+                    </div>
+
+
+<!--
+                    <div class="form-group mb-3">
+                        <label class="form-label">expire date</label>
+                        <input class="form-control"
+                               id="expire_date"
+                               name="expire_date"
+                               placeholder="Enter Expire Date"
+                               th:field="*{expire_date}"
+                               type="date"
+                        />
+                        <p th:errors="*{expire_date}" class="text-danger"
+                           th:if="${#fields.hasErrors('expire_date')}">
+                        </p>
+                    </div>
+-->
+                    <div class="form-group mb-3">
+                        <label class="form-label">Role</label>
+                        <input class="form-control"
+                               id="role_name"
+                               name="role_name"
+                               placeholder="Enter Role address"
+                               th:field="*{role_name}"
+                               type="text"
+                        />
+                        <p th:errors="*{role_name}" class="text-danger" th:if="${#fields.hasErrors('role_name')}"></p>
                     </div>
 
                     <div class="form-group mb-3">

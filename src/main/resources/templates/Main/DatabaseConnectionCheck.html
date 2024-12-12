@@ -5,6 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/1ab94d0eba.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+
+    <script type="text/javascript" src="/webjars/jquery/3.7.0/dist/jquery.min.js">
+
+
+
     <title>Login Form</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,6 +20,7 @@
             src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"
     ></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 
@@ -139,6 +147,18 @@
             border-radius: 4px;
             transition: all 0.3s ease;
         }
+        form input[type="button"] {
+            margin-top: 2rem;
+            padding: 0.4rem;
+            width: 20%;
+            background: linear-gradient(to left, #4776E6, #8e54e9);
+            cursor: pointer;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 100;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
 
         form input[type="submit"]:hover {
             letter-spacing: 0.5px;
@@ -205,52 +225,76 @@
         }
 
     </style>
+
 </head>
 <body>
 <main class="container">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/DatabaseConnectionCheck.js}"></script>
+   <!--
+    <script>
+        $(document).ready(function() {
+            $("#dbnames1").change(function() {
+                alert($("#dbnames1").val());
+                $("#dbnames1").val("--Ram--");
+            });
+        });
+    </script>
+    -->
+
+
+    <table><tr>
+
+        <div class="input-field">
+            <select id="dbnames1" name="dbnames1">
+                <option th:each="entity : ${dbnames}" th:value="${entity.id}" th:text="${entity.name}">
+                </option>
+            </select>
+        </div></tr>
+
+<!--
+        <tr> <div class="input-field">
+            <a th:href="@{/Main/databaseSelection/delete/{id}(id=${schedule.id})}" class="btn btn-danger"
+               th:onclick="'return confirm(\'Are you sure?\');'">Delete</a>
+        </div></tr>
+-->
+        <tr> <div class="input-field">
+            <a href="#" class="btn btn-danger" onclick="deleteConnctionString()">Delete</a>
+        </div></tr>
+
+    </table>
+
+
+
+    <div class="underline">
+    </div>
 
     <form action="#"
-          th:action="@{/Main/test_connection}"\
+          th:action="@{/Main/test_connection}"
           class="sign-in-form"
           method="post"
           th:object="${connectionRequest}"
           enctype="multipart/form-data">
 
 
-
-        <div class="input-field">
-            <select id="dbnames" name="dbnames">
-                <option th:each="name : ${dbnames}" th:value="${name}" th:text="${name}">
-                </option>
-            </select>
-            <div class="underline"></div>
-        </div>
-
-
-
-
         <p cssErrorClass="form-field-error" style="color: red" th:if="${param.loginError}" th:text="'Error - Wrong Database connection..'"></p>
 
+
         <div class="input-field">
+
+            <input type="hidden" name="id" id="id" th:field="*{id}" placeholder="Enter Connection ID">
+
+            <div class="underline"></div>
             <input type="text" name="name" id="name" th:field="*{name}"
                    placeholder="Enter Connection Name">
             <div class="underline"></div>
         </div>
-
-
-
-
+        <br>
         <div class="input-field">
-            <input type="text" name="dbsource" id="dbsource" th:field="*{dbsource}"
+            <input type="text" name="dbsource" id="dbsource" th:field="*{dbsource}" Value="postgres"
                    placeholder="Enter Source Name">
-            <div class="underline"></div>
         </div>
 
-        <div class="input-field">
-            <input type="text" th:field="*{Database}" name="Database" id="Database" value="postgres"
-                   placeholder="Enter schema name (mydb)">
-            <div class="underline"></div>
-        </div>
         <br>
         <div class="input-field">
             <input type="text" th:field="*{dbName}" name="dbName" id="dbName"
@@ -264,6 +308,7 @@
             <div class="underline"></div>
         </div>
         <br>
+
         <div class="input-field">
             <input type="text" th:field="*{hostname}"
                    placeholder="Enter Your hostname name" required>

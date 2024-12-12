@@ -27,21 +27,22 @@ public class SpringSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/register/**").permitAll()
+                        authorize.requestMatchers("/register/**").authenticated()
                                 .requestMatchers("/index").permitAll() // Permit Main Page
-                                .requestMatchers("/login").permitAll() // Permit Main Page
+                                .requestMatchers("/login").permitAll() // Permit Main Page\
                                 //.requestMatchers("/navigation/**").authenticated()
-
-
                                 //.requestMatchers("navigation/show_campaign").authenticated()
-
                                 //.requestMatchers("/show_campaign").permitAll()
-
 
                                 .requestMatchers("/webjars/**").permitAll() // Permit all CSS
                                 .requestMatchers("/js/**").permitAll() // Ram this is Javascript call security file for cascate list values
                                 .requestMatchers("/css/**").permitAll() // Ram this is Javascript call security file for cascate list values
+                                .requestMatchers("/admin/**").permitAll()
                                 .requestMatchers("/Main/**").authenticated()
+                                .requestMatchers("/Main/databaseSelection/**").authenticated()
+
+                                .requestMatchers("/Main/databaseSelection/delete/**").authenticated()
+
                                 .requestMatchers("/Main/metadatamodels/**").authenticated() // Dont Permit without login
                                 .requestMatchers("/navigation/**").authenticated()
 

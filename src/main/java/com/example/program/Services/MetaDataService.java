@@ -5,6 +5,8 @@ import java.util.List;
 import com.example.program.models.MetaDataModel;
 import com.example.program.repository.MetaDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 
@@ -14,7 +16,12 @@ public class MetaDataService {
     MetaDataRepository metasatarepository;
 
     public List<MetaDataModel> getAll() {
+
         return (List<MetaDataModel>) metasatarepository.findAll();
+    }
+
+    public List<MetaDataModel> findByCampaignName(String campaign_name) {
+        return metasatarepository.findByCampaignName(campaign_name);
     }
 
     public MetaDataModel getMetaDataModel(Integer id) {

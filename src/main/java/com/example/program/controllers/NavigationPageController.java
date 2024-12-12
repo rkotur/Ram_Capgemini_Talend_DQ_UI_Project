@@ -38,8 +38,6 @@ public class NavigationPageController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", schedulePage.getTotalPages());
 
-        //return "/navigation/show_campaign"; // Return the view for displaying all campaigns
-
         return "navigation/show_campaign";
 
     }
