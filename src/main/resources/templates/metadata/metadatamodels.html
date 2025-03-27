@@ -26,103 +26,20 @@
         </li>
       </ul>
     </div>
+    <a class="navbar-brand" href="/logout">Logout</a>
   </div>
 </nav>
 
 <h4>Data <span th:text="${parameter}"></span></h4>
 
 
-<form action="#" th:object="${metadatamodel}" method="post" th:action="@{saveNew}" enctype="multipart/form-data">
-  <table class="table table-bordered table-striped" style="width: 100%">
-    <tr> <td>
-
-      <table>
-        <tr>
-          <td valign="top">
-            <label for="dbschema">Schema:</label>
-          </td><td>
-          <select id="dbschema" name="dbschema" th:field="*{dbschema}" required>
-            <option th:each="schema_name : ${schemaNames}"
-                    th:value="${schema_name}"
-                    th:text="${schema_name}">
-            </option>
-
-          </select>
-        </td>
-        </tr>
-        <td>
-          <label for="dbtable">Table:</label>
-        </td>
-        <td>
-          <select id="dbtable" name="dbtable" th:field="*{dbtable}" required>
-            <option th:each="table_name : ${tableNames}"
-                    th:value="${table_name}"
-                    th:text="${table_name}"></option>
-          </select>
-          <br>
-        </td>
-    </tr>
-    <tr>
-
-      <td>
-        <label for="dbcolumn">Column:</label>
-      </td>
-      <td>
-        <select id="dbcolumn" name="dbcolumn" th:field="*{dbcolumn}" required>
-          <option th:each="columns_Names : ${columnsNames}"
-                  th:value="${columns_Names}"
-                  th:text="${columns_Names}"></option>
-        </select>
-      </td>
-    </tr>
-
-    <td>
-      <label>Campaign:</label>
-    </td>
-
-    <td>
-
-      <select id="campaign_name" name="campaign_name" th:field="*{campaign_name}" required>
-        <option th:each="campaign_name : ${campaign}"
-                th:value="${campaign_name}"
-                th:text="${campaign_name}"></option>
-      </select>
-    </td>
-    </tr>
 
 
-  </table>
-  <td>
-    <input type="hidden" id="dbsource" name="dbsource" th:value="${parameter}">
-
-    <table>
-      <tr>
-        <td> <label for="dbcheck">Check:</label> </td>
-        <td><select multiple class="form-select" id="dbcheck" name="dbcheck" th:field="*{dbcheck}" >
-          <option th:each="rulemetanames  : ${ruleMetaNames}"
-                  th:value="${rulemetanames}"
-                  th:text="${rulemetanames}">
-          </option>
-        </select> </td>
-      </tr>
-    </table>
-  </td>
-  <td>
-    <input class="btn btn-outline-dark" type="submit"  value="Add" Style="color:blue; text-decoration: underline"/>
-  </td>
-  </tr>
-  </table>
-</form>
-
-
-<!--------------------------------------------------------------------------------------------------------->
 <form action="#" th:object="${metadata_searchDTO}" method="post" th:action="@{search}" enctype="multipart/form-data">
   <table class="table table-bordered table-striped" style="width: 100%">
     <tr>
       <td>
         <label>Campaign:</label>
-      </td>
-      <td>
       <select id="search_campaign_name" name="search_campaign_name" th:field="*{campaign_name}">
         <option th:each="campaign_name : ${campaign}"
                 th:value="${campaign_name}"
@@ -134,16 +51,16 @@
     </tr>
   </table>
 </form>
-<!-------------------------------------------------------------------------------------------------------->
 
 
-<table class="table table-bordered table-striped" th:with="inx=0" >
+<!-- Button to Open the Modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMetadataModal">
+  Add Metadata
+</button>
+<table class="table table-bordered table-striped" th:with="inx=0">
   <thead>
   <tr>
-    <!--
-    <td>Id1</td>
-    <td>Id</td>
-    -->
+    <td>Seq</td>
     <td>Schema</td>
     <td>Table Name</td>
     <td>Column Name</td>
@@ -152,32 +69,112 @@
     <td>Remove</td>
   </tr>
   </thead>
-  <tr th:each="metadatamodel, iterStat :${metadatamodels}" th:if="${metadatamodel.dbsource == parameter}" th:with="inx=${inx + 1}">
+  <tbody>
+  <tr th:each="metadatamodel, iterStat : ${metadataPage.content}" th:if="${metadatamodel.dbsource == parameter}" th:with="inx=${inx + 1}">
     <form action="#" method="post" th:action="@{delete/__${metadatamodel.Id}__}">
-
-      <div>
-        <td th:hidden="${metadatamodel.Id}"></td>
-        <td th:text="${metadatamodel.dbschema}"></td>
-        <td th:text="${metadatamodel.dbtable}"></td>
-        <td th:text="${metadatamodel.dbcolumn}"></td>
-        <td th:text="${metadatamodel.dbcheck}"></td>
-        <td th:text="${metadatamodel.campaign_name}"></td>
-
-        <!--		<td th:text="${#strings.replace(metadatamodel.dbcheck,',',' &lt;br&gt; ')}"></td>-->
-        <!--
-                    <td> <button class="btn btn-outline-dark" type="button">
-                        <a th:href="@{edit/__${metadatamodel.Id}__}">Edit</a>
-                    </button>
-                    </td>
-        -->
-        <td>
-          <button class="btn btn-outline-dark" type="submit" Style="color:blue;text-decoration:underline">
-            Delete
-          </button>
-        </td>
-      </div>
-    </form >
+      <td th:text="${iterStat.index + 1}"></td>
+      <td th:text="${metadatamodel.dbschema}"></td>
+      <td th:text="${metadatamodel.dbtable}"></td>
+      <td th:text="${metadatamodel.dbcolumn}"></td>
+      <td th:text="${metadatamodel.dbcheck}"></td>
+      <td th:text="${metadatamodel.campaign_name}"></td>
+      <td>
+        <button class="btn btn-outline-dark" type="submit" style="color:blue;text-decoration:underline">Delete</button>
+      </td>
+    </form>
   </tr>
+  </tbody>
 </table>
+
+<div>
+  <ul class="pagination">
+    <li th:classappend="${metadataPage.hasPrevious()} ? 'enabled' : 'disabled'">
+      <a th:href="@{/metadata/getAll( trans=${param.trans}, campaign_name=${param.campaign_name},page=${metadataPage.number - 1})}">Previous - </a>
+    </li>
+    <li th:each="i : ${#numbers.sequence(0, metadataPage.totalPages - 1)}"
+        th:classappend="${i == metadataPage.number} ? 'active'">
+      <a th:href="@{/metadata/getAll( trans=${param.trans}, campaign_name=${param.campaign_name},page=${i})}" th:text="${i + 1}">1</a>
+    </li>
+    <li th:classappend="${metadataPage.hasNext()} ? 'enabled' : 'disabled'">
+      <a th:href="@{/metadata/getAll( trans=${param.trans}, campaign_name=${param.campaign_name},page=${metadataPage.number + 1})}">Next</a>
+    </li>
+  </ul>
+</div>
+
+
+<!-- -------------------------------------------------------------------------------------------------------- -->
+
+<!-- The Modal -->
+<div class="modal" id="addMetadataModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Add Metadata</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form action="#" th:object="${metadatamodel}" method="post" th:action="@{saveNew}" enctype="multipart/form-data">
+
+          <!-- Include your form fields here -->
+          <div class="mb-3">
+            <label for="dbschema" class="form-label">Schemas:</label>
+            <select id="dbschema" name="dbschema" th:field="*{dbschema}" class="form-select" required>
+              <option th:each="schema_name : ${schemaNames}" th:value="${schema_name}" th:text="${schema_name}"></option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="dbtable" class="form-label">Tables:</label>
+            <select id="dbtable" name="dbtable" th:field="*{dbtable}" class="form-select" required>
+              <option th:each="table_name : ${tableNames}" th:value="${table_name}" th:text="${table_name}"></option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="dbcolumn" class="form-label">Column:</label>
+            <select id="dbcolumn" name="dbcolumn" th:field="*{dbcolumn}" class="form-select" required>
+              <option th:each="columns_Names : ${columnsNames}" th:value="${columns_Names}" th:text="${columns_Names}"></option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="campaign_name" class="form-label">Campaign:</label>
+            <select id="campaign_name" name="campaign_name" th:field="*{campaign_name}" class="form-select" required>
+              <option th:each="campaign_name : ${campaign}" th:value="${campaign_name}" th:text="${campaign_name}"></option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="dbcheck" class="form-label">Check:</label>
+            <select multiple id="dbcheck" name="dbcheck" th:field="*{dbcheck}" class="form-select" required>
+              <option th:each="rulemetanames : ${ruleMetaNames}" th:value="${ruleMetaNames}" th:text="${ruleMetaNames}"></option>
+            </select>
+          </div>
+
+          <input type="hidden" id="dbsource" name="dbsource" th:value="${parameter}">
+
+          <!-- Add other fields similarly -->
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+</form>
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+
+
+
+
 </body>
 </html>

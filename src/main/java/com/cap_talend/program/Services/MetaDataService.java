@@ -1,0 +1,79 @@
+package com.cap_talend.program.Services;
+
+import java.util.List;
+
+import com.cap_talend.program.repository.MetaDataRepository;
+import com.cap_talend.program.models.MetaDataModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class MetaDataService {
+    @Autowired(required=true)
+    MetaDataRepository metasatarepository;
+
+    public Page<MetaDataModel> getMetadata(Pageable pageable) {
+        return metasatarepository.findAll(pageable);
+    }
+
+//    public List<MetaDataModel> findByCampaignName(String campaign_name) {
+//        return metasatarepository.findByCampaignName(campaign_name);
+//    }
+
+    public Page<MetaDataModel> getMetadata(Pageable pageable, String campaignName) {
+        if (campaignName != null && !campaignName.isEmpty()) {
+            return metasatarepository.findByCampaignName(campaignName, pageable);
+        } else {
+            return metasatarepository.findAll(pageable);
+        }
+    }
+
+
+    public List<MetaDataModel> getAll() {
+
+        return (List<MetaDataModel>) metasatarepository.findAll();
+    }
+
+
+
+    public MetaDataModel getMetaDataModel(Integer id) {
+        return metasatarepository.findById(id).get();
+    }
+
+    public void insert(MetaDataModel metadatamodel) {
+        int max = 0;
+
+        if(!(metadatamodel.getDbcolumn().isEmpty() && metadatamodel.getDbschema().isEmpty() && metadatamodel.getDbtable().isEmpty())) {
+
+            Iterable<MetaDataModel> list = metasatarepository.findAll();
+            for (MetaDataModel stud : list) {
+                if (stud.getId() > max) max = stud.getId();
+            }
+            metadatamodel.setId(max + 1);
+            metasatarepository.save(metadatamodel);
+        }
+    }
+
+    public void update(int id, MetaDataModel newmetadatamodel) {
+        MetaDataModel metadatamodel =  metasatarepository.findById(id).get();
+
+        metadatamodel.setDbschema(newmetadatamodel.getDbschema());
+        metadatamodel.setDbtable(newmetadatamodel.getDbtable());
+        metadatamodel.setDbcolumn(newmetadatamodel.getDbcolumn());
+        metadatamodel.setDbcheck(newmetadatamodel.getDbcheck());
+
+        metadatamodel.setUpdatedBy(newmetadatamodel.getUpdatedBy());
+        metadatamodel.setUpdatedOn(newmetadatamodel.getUpdatedOn());
+        //if(newmetadatamodel.getContent().length!=0)
+        //    metadatamodel.setContent(newmetadatamodel.getContent());
+        metasatarepository.save(metadatamodel);
+    }
+
+    public void delete(int id) {
+        MetaDataModel metadatamodel =  metasatarepository.findById(id).get();
+        metasatarepository.delete(metadatamodel);
+    }
+}
